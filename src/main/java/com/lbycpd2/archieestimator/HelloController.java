@@ -18,50 +18,54 @@ public class HelloController {
     protected void onHelloButtonClick() {
         welcomeText.setText("Adding!");
 
-        if(tableExists("CostBook")){
+        if (!tableExists("CostBook")) {
             String createTableSQL = """
-                    CREATE TABLE CostBook (
-                        costItemID               INTEGER PRIMARY KEY,
-                        costItemName,
-                        costCategoryID           NUMERIC REFERENCES CostCategories (costCategoryID),
-                        costItemNotes            TEXT,
-                        costItemUnit             TEXT,
-                        costItemMaterialUnitCost NUMERIC,
-                        costItemLaborUnitCost    NUMERIC
-                    );
-                    CREATE TABLE CostCategories (
-                        costCategoryID   INTEGER PRIMARY KEY,
-                        costCategoryName TEXT
-                    );
-                    
-                    """;
-            log.info("Created table CostBook");
-        } else {
-            log.info("Table CostBook already exists!");
+            CREATE TABLE CostBook (
+                costItemID               INTEGER PRIMARY KEY AUTOINCREMENT,
+                costItemName             TEXT,
+                costCategoryID           NUMERIC REFERENCES CostCategories (costCategoryID),
+                costItemNotes            TEXT,
+                costItemUnit             TEXT,
+                costItemMaterialUnitCost NUMERIC,
+                costItemLaborUnitCost    NUMERIC
+            );
+            CREATE TABLE CostCategories (
+                costCategoryID   INTEGER PRIMARY KEY,
+                costCategoryName TEXT
+            );
+            """;
+
+            try (Connection conn = SQLConnection.getConnection();
+                 Statement stmt = conn.createStatement()) {
+
+                stmt.executeUpdate(createTableSQL);
+                log.info("Created table CostBook and CostCategories");
+
+            } catch (SQLException e) {
+                log.error("Error creating tables: {}", e.getMessage());
+            }
         }
 
         final String INSERT_COST_ITEM_SQL =
-                "INSERT INTO CostBook (costItemID, " +
-                        "costItemName, " +
+                "INSERT INTO CostBook (costItemName, " +
                         "costCategoryID, " +
                         "costItemNotes, " +
                         "costItemUnit, " +
                         "costItemMaterialUnitCost, " +
-                        "costItemLaborUnitCost) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        CostItem ci = new CostItem(1,"Block",0,"None.","sqm",new BigDecimal(100),new BigDecimal(100));
+                        "costItemLaborUnitCost) VALUES (?, ?, ?, ?, ?, ?)";
+        CostItem ci = new CostItem("Block",0,"None.","sqm",new BigDecimal("100.0"),new BigDecimal("100.0"));
 
         try(Connection conn = SQLConnection.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(INSERT_COST_ITEM_SQL);){
-                pstmt.setInt(1, ci.getCostItemID());
-                pstmt.setString(2, ci.getCostItemName());
-                pstmt.setInt(3, ci.getCostCategoryID());
-                pstmt.setString(4, ci.getCostItemNotes());
-                pstmt.setString(5, ci.getCostItemUnit());
-                pstmt.setBigDecimal(6, ci.getCostItemMaterialUnitCost());
-                pstmt.setBigDecimal(7, ci.getCostItemLaborUnitCost());
+                pstmt.setString(1, ci.getCostItemName());
+                pstmt.setInt(2, ci.getCostCategoryID());
+                pstmt.setString(3, ci.getCostItemNotes());
+                pstmt.setString(4, ci.getCostItemUnit());
+                pstmt.setBigDecimal(5, ci.getCostItemMaterialUnitCost());
+                pstmt.setBigDecimal(6, ci.getCostItemLaborUnitCost());
 
                 pstmt.executeUpdate();
-                System.out.println("Cost item inserted successfully!");
+                log.info("Inserted cost item");
 
         } catch (SQLException throwables) {
             log.error(throwables.getMessage());
@@ -70,22 +74,21 @@ public class HelloController {
     }
 
     private boolean tableExists(String tableName) {
-        String checkTableSQL = "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '' AND table_name = '" + tableName + "'";
+        String checkTableSQL = "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='" + tableName + "'";
 
         try (Connection conn = SQLConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(checkTableSQL)) {
 
-            if (rs.next()) {
-                String databaseName = rs.getString("table_schema");
-                System.out.println("Table " + tableName + " exists in database: " + databaseName);
+            if (rs.next() && rs.getInt(1) > 0) {
+                log.info("Table {} exists.", tableName);
                 return true;
             } else {
-                System.out.println("Table " + tableName + " does not exist in any database.");
+                log.info("Table {} does not exist.", tableName);
                 return false;
             }
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("Error checking if table exists: {}", e.getMessage());
         }
         return false;
     }

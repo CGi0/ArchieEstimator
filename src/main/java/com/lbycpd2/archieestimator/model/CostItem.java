@@ -16,14 +16,12 @@ public class CostItem {
     private BigDecimal costItemMaterialUnitCost;
     private BigDecimal costItemLaborUnitCost;
 
-    public CostItem(int costItemID,
-                    String costItemName,
+    public CostItem(String costItemName,
                     int costCategoryID,
                     String costItemNotes,
                     String unit,
                     BigDecimal materialUnitCost,
                     BigDecimal LaborUnitCost) {
-        this.costItemID = costItemID;
         this.costItemName = costItemName;
         this.costCategoryID = costCategoryID;
         this.costItemNotes = costItemNotes;
