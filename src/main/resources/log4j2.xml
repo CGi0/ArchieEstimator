@@ -6,7 +6,7 @@
 
     <Appenders>
         <Console name="console" target="SYSTEM_OUT" follow="true">
-            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <PatternLayout pattern="%highlight{${LOG_PATTERN}}{FATAL=red, ERROR=red, WARN=yellow, INFO=green, DEBUG=blue, TRACE=cyan}"/>
         </Console>
     </Appenders>
 
