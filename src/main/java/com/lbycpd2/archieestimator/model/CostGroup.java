@@ -6,8 +6,7 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class CostCategory {
-    private int costCategoryID;
+public class CostGroup {
     private int costGroupID;
-    private final String costCategoryName;
+    private final String costGroupName;
 }

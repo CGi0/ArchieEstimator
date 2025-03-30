@@ -21,7 +21,7 @@ public class CostBookDAO implements DataAccessObject<CostItem>{
                         costItemLaborUnitCost) VALUES (?, ?, ?, ?, ?, ?)""";
 
         try(Connection conn = SQLConnection.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(INSERT_COST_ITEM_SQL);){
+            PreparedStatement pstmt = conn.prepareStatement(INSERT_COST_ITEM_SQL)){
             pstmt.setString(1, object.getCostItemName());
             pstmt.setInt(2, object.getCostCategoryID());
             pstmt.setString(3, object.getCostItemNotes());

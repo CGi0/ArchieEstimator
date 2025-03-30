@@ -9,13 +9,15 @@ import java.sql.Statement;
 
 @Slf4j
 public class InitializeTables {
+    private static final String costBookTableName = "CostBook";
+
     public void start(){
-        if (!tableExists("CostBook")) {
+        if (!tableExists(costBookTableName)) {
             String createTableSQL = """
             CREATE TABLE CostBook (
                 costItemID               INTEGER PRIMARY KEY AUTOINCREMENT,
                 costItemName             TEXT,
-                costCategoryID           NUMERIC REFERENCES CostCategories (costCategoryID),
+                costCategoryID           INTEGER REFERENCES CostCategories (costCategoryID),
                 costItemNotes            TEXT,
                 costItemUnit             TEXT,
                 costItemMaterialUnitCost NUMERIC,
@@ -23,7 +25,12 @@ public class InitializeTables {
             );
             CREATE TABLE CostCategories (
                 costCategoryID   INTEGER PRIMARY KEY AUTOINCREMENT,
+                costGroupID      INTEGER REFERENCES CostGroups (costGroupID),
                 costCategoryName TEXT
+            );
+            CREATE TABLE CostGroups (
+                costGroupID   INTEGER PRIMARY KEY AUTOINCREMENT,
+                costGroupName TEXT
             );
             """;
 

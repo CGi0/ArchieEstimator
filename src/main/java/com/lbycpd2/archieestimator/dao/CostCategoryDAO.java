@@ -15,12 +15,13 @@ import java.util.List;
 public class CostCategoryDAO implements DataAccessObject<CostCategory> {
     @Override
     public void save(CostCategory object) {
-        final String SAVE_COST_CATEGORY_SQL = "INSERT INTO CostCategories (costCategoryName) VALUES (?)";
+        final String SAVE_COST_CATEGORY_SQL = "INSERT INTO CostCategories (costCategoryName, costGroupID) VALUES (?, ?)";
 
         try (Connection conn = SQLConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(SAVE_COST_CATEGORY_SQL)) {
 
             pstmt.setString(1, object.getCostCategoryName());
+            pstmt.setInt(2, object.getCostGroupID());
             pstmt.executeUpdate();
             log.info("Cost category saved successfully!");
 
@@ -31,13 +32,14 @@ public class CostCategoryDAO implements DataAccessObject<CostCategory> {
 
     @Override
     public void update(int id, CostCategory object) {
-        final String UPDATE_COST_CATEGORY_SQL = "UPDATE CostCategories SET costCategoryName = ? WHERE costCategoryID = ?";
+        final String UPDATE_COST_CATEGORY_SQL = "UPDATE CostCategories SET costCategoryName = ?, costGroupID = ? WHERE costCategoryID = ?";
 
         try (Connection conn = SQLConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(UPDATE_COST_CATEGORY_SQL)) {
 
             pstmt.setString(1, object.getCostCategoryName());
-            pstmt.setInt(2, id);
+            pstmt.setInt(2, object.getCostGroupID());
+            pstmt.setInt(3, id);
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
                 log.info("Cost category updated successfully!");
@@ -72,13 +74,14 @@ public class CostCategoryDAO implements DataAccessObject<CostCategory> {
 
     @Override
     public int getID(CostCategory object) {
-        final String GET_ID_SQL = "SELECT costCategoryID FROM CostCategories WHERE costCategoryName = ?";
+        final String GET_ID_SQL = "SELECT costCategoryID FROM CostCategories WHERE costCategoryName = ? AND costGroupID = ?";
         int id = 0;
 
         try (Connection conn = SQLConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(GET_ID_SQL)) {
 
             pstmt.setString(1, object.getCostCategoryName());
+            pstmt.setInt(2, object.getCostGroupID());
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     id = rs.getInt("costCategoryID");
@@ -103,7 +106,7 @@ public class CostCategoryDAO implements DataAccessObject<CostCategory> {
             pstmt.setInt(1, id);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    costCategory = new CostCategory(rs.getInt("costCategoryID"), rs.getString("costCategoryName"));
+                    costCategory = new CostCategory(rs.getInt("costCategoryID"), rs.getInt("costGroupID"), rs.getString("costCategoryName"));
                 }
             }
 
@@ -125,7 +128,7 @@ public class CostCategoryDAO implements DataAccessObject<CostCategory> {
             pstmt.setString(1, name);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    costCategory = new CostCategory(rs.getInt("costCategoryID"), rs.getString("costCategoryName"));
+                    costCategory = new CostCategory(rs.getInt("costCategoryID"), rs.getInt("costGroupID"), rs.getString("costCategoryName"));
                 }
             }
 
@@ -146,7 +149,7 @@ public class CostCategoryDAO implements DataAccessObject<CostCategory> {
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
-                CostCategory costCategory = new CostCategory(rs.getInt("costCategoryID"), rs.getString("costCategoryName"));
+                CostCategory costCategory = new CostCategory(rs.getInt("costCategoryID"), rs.getInt("costGroupID"), rs.getString("costCategoryName"));
                 costCategories.add(costCategory);
             }
 

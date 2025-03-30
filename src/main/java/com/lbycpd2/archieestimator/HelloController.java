@@ -3,13 +3,11 @@ package com.lbycpd2.archieestimator;
 import com.lbycpd2.archieestimator.dao.CostBookDAO;
 import com.lbycpd2.archieestimator.model.CostItem;
 import com.lbycpd2.archieestimator.util.InitializeTables;
-import com.lbycpd2.archieestimator.util.SQLConnection;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
-import java.sql.*;
 
 @Slf4j
 public class HelloController {
@@ -20,7 +18,6 @@ public class HelloController {
     protected void onHelloButtonClick() {
         welcomeText.setText("Adding!");
         CostItem ci = new CostItem("Block", 0, "None.", "sqm", new BigDecimal("100.0"), new BigDecimal("100.0"));
-
         InitializeTables t = new InitializeTables();
         t.start();
         CostBookDAO dao = new CostBookDAO();
