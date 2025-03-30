@@ -1,11 +1,12 @@
 package com.lbycpd2.archieestimator.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Setter
 @Getter
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class CostCategory {
-    private String costCategoryName;
     private int costCategoryID;
+    private final String costCategoryName;
 }

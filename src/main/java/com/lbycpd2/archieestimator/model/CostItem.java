@@ -16,6 +16,8 @@ public class CostItem {
     private BigDecimal costItemMaterialUnitCost;
     private BigDecimal costItemLaborUnitCost;
 
+    public CostItem(){};
+
     public CostItem(String costItemName,
                     int costCategoryID,
                     String costItemNotes,

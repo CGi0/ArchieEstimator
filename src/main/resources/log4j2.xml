@@ -6,7 +6,7 @@
 
     <Appenders>
         <Console name="console" target="SYSTEM_OUT" follow="true">
-            <PatternLayout pattern="%highlight{${LOG_PATTERN}}{FATAL=red, ERROR=red, WARN=yellow, INFO=green, DEBUG=blue, TRACE=cyan}"/>
+            <PatternLayout pattern="%highlight{${LOG_PATTERN}}{FATAL=red, ERROR=red, WARN=yellow, INFO=white, DEBUG=blue, TRACE=cyan, ALL=magenta, OFF=white}" disableAnsi="false"/>
         </Console>
     </Appenders>
 
@@ -14,5 +14,8 @@
         <Root level="info">
             <AppenderRef ref="console"/>
         </Root>
+        <Logger name="com.lbycpd2" level="all" additivity="false">
+            <AppenderRef ref="console"/>
+        </Logger>
     </Loggers>
 </Configuration>
