@@ -11,7 +11,6 @@ public class CostCategory {
     private final String costCategoryName;
     private final int costGroupID;
 
-
     @Override
     public String toString() {
         return costCategoryName;

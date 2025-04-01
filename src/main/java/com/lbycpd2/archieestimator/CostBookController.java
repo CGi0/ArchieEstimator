@@ -18,12 +18,22 @@ import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.lbycpd2.archieestimator.util.DefaultCostCategory.DEFAULT_COST_CATEGORY;
+import static com.lbycpd2.archieestimator.util.DefaultCostItem.DEFAULT_COST_ITEM;
+
 @Slf4j
 public class CostBookController {
+    @FXML private Label labelGroup;
+    @FXML private Label labelCategory;
+    @FXML private Label labelCostItem;
+    @FXML private Label labelName;
+    @FXML private Label labelNotes;
+    @FXML private Label labelUnitMeasurement;
+    @FXML private Label labelMaterialUnitCost;
+    @FXML private Label labelLaborUnitCost;
     @FXML private ChoiceBox<CostGroup> choiceBoxGroup;
     @FXML private ListView<CostCategory> listViewCategory;
     @FXML private ListView<CostItem> listViewCostItem;
@@ -49,15 +59,12 @@ public class CostBookController {
     private final SearchManager<CostCategory> costCategorySearchManager = new SearchManager<>();
     private final SearchManager<CostItem> costItemSearchManager = new SearchManager<>();
 
-    private static final CostItem defaultCostItem = new CostItem("No cost items found", -1, "", "", new BigDecimal("0"), new BigDecimal("0"));
-    private static final CostCategory defaultCostCategory = new CostCategory("No categories found", -1);
-
     public void initialize() {
         choiceBoxCostGroupManager = new ChoiceBoxNodeManager<>(choiceBoxGroup, new CostGroup("No groups found"));
         listViewCostCategoryManager =
-                new ListViewNodeManager<>(listViewCategory, textFieldCategory, defaultCostCategory, costCategorySearchManager);
+                new ListViewNodeManager<>(listViewCategory, textFieldCategory, DEFAULT_COST_CATEGORY, costCategorySearchManager);
         listViewCostItemManager =
-                new ListViewNodeManager<>(listViewCostItem, textFieldCostItem, defaultCostItem, costItemSearchManager);
+                new ListViewNodeManager<>(listViewCostItem, textFieldCostItem, DEFAULT_COST_ITEM, costItemSearchManager);
         choiceBoxCostGroupManager.initialize(fetchCostGroups());
     }
 
@@ -82,8 +89,22 @@ public class CostBookController {
         }
     }
 
+    public void onEditCategoriesAction() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("cost-category.fxml"));
+            Parent root = loader.load();
+            CostCategoryController controller = loader.getController();
+            controller.setCostBookController(this); // Pass the reference of CostBookController to CostGroupController
 
-    public void onEditCategoriesAction() {}
+            Stage stage = new Stage();
+            stage.setTitle("Edit Cost Categories");
+            stage.setScene(new Scene(root));
+            stage.setOnCloseRequest(event -> refreshCostGroups()); // Refresh cost groups when the window is closed
+            stage.show();
+        } catch (IOException e) {
+            log.warn(e.getMessage());
+        }
+    }
 
     public void onEditCostItemAction() {}
 
@@ -156,7 +177,7 @@ public class CostBookController {
             return costItemList;
         } catch (Exception e) {
             log.warn(e.getMessage());
-            return List.of(defaultCostItem);
+            return List.of(DEFAULT_COST_ITEM);
         }
     }
 

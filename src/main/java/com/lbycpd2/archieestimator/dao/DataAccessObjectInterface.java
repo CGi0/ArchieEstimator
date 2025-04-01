@@ -2,7 +2,7 @@ package com.lbycpd2.archieestimator.dao;
 
 import java.util.List;
 
-public interface DataAccessObject<T> {
+public interface DataAccessObjectInterface<T> {
     void save(T object);
     void update(int id, T object);
     void delete(int id);
