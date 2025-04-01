@@ -9,4 +9,9 @@ import lombok.*;
 public class CostGroup {
     private int costGroupID;
     private final String costGroupName;
+
+    @Override
+    public String toString() {
+        return costGroupName;
+    }
 }

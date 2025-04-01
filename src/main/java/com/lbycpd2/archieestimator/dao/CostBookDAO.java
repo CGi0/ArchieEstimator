@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class CostBookDAO implements DataAccessObject<CostItem>{
+public class CostBookDAO implements DataAccessObjectInterface<CostItem> {
     @Override
     public void save(CostItem object) {
         final String INSERT_COST_ITEM_SQL = """
@@ -73,7 +73,7 @@ public class CostBookDAO implements DataAccessObject<CostItem>{
 
     @Override
     public void delete(int id) {
-        final String DELETE_COST_ITEM_SQL = "DELETE FROM CostItems WHERE costItemID = ?";
+        final String DELETE_COST_ITEM_SQL = "DELETE FROM CostBook WHERE costItemID = ?";
 
         try (Connection conn = SQLConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(DELETE_COST_ITEM_SQL)) {
@@ -94,7 +94,7 @@ public class CostBookDAO implements DataAccessObject<CostItem>{
 
     @Override
     public int getID(CostItem object) {
-        final String GET_ID_SQL = "SELECT costItemID FROM CostItems WHERE costItemName = ? AND costCategoryID = ? AND costItemNotes = ? AND costItemUnit = ? AND costItemMaterialUnitCost = ? AND costItemLaborUnitCost = ?";
+        final String GET_ID_SQL = "SELECT costItemID FROM CostBook WHERE costItemName = ? AND costCategoryID = ? AND costItemNotes = ? AND costItemUnit = ? AND costItemMaterialUnitCost = ? AND costItemLaborUnitCost = ?";
 
         try (Connection conn = SQLConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(GET_ID_SQL)) {
@@ -122,7 +122,7 @@ public class CostBookDAO implements DataAccessObject<CostItem>{
 
     @Override
     public CostItem get(int id) {
-        final String GET_COST_ITEM_BY_ID_SQL = "SELECT * FROM CostItems WHERE costItemID = ?";
+        final String GET_COST_ITEM_BY_ID_SQL = "SELECT * FROM CostBook WHERE costItemID = ?";
 
         try (Connection conn = SQLConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(GET_COST_ITEM_BY_ID_SQL)) {
@@ -153,7 +153,7 @@ public class CostBookDAO implements DataAccessObject<CostItem>{
 
     @Override
     public CostItem get(String name) {
-        final String GET_COST_ITEM_BY_NAME_SQL = "SELECT * FROM CostItems WHERE costItemName LIKE ?";
+        final String GET_COST_ITEM_BY_NAME_SQL = "SELECT * FROM CostBook WHERE costItemName LIKE ?";
 
         try (Connection conn = SQLConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(GET_COST_ITEM_BY_NAME_SQL)) {
@@ -184,7 +184,7 @@ public class CostBookDAO implements DataAccessObject<CostItem>{
 
     @Override
     public List<CostItem> getAll() {
-        final String GET_ALL_COST_ITEMS_SQL = "SELECT * FROM CostItems";
+        final String GET_ALL_COST_ITEMS_SQL = "SELECT * FROM CostBook";
         List<CostItem> costItems = new ArrayList<>();
 
         try (Connection conn = SQLConnection.getConnection();
@@ -204,6 +204,34 @@ public class CostBookDAO implements DataAccessObject<CostItem>{
             }
         } catch (SQLException e) {
             log.error("Error retrieving all cost items: {}", e.getMessage());
+        }
+        return costItems;
+    }
+
+    public List<CostItem> getAll(int costCategoryID) {
+        final String GET_ALL_COST_ITEMS_SQL = "SELECT * FROM CostBook WHERE costCategoryID = ?";
+        List<CostItem> costItems = new ArrayList<>();
+
+        try (Connection conn = SQLConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(GET_ALL_COST_ITEMS_SQL)) {
+
+            pstmt.setInt(1, costCategoryID);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    CostItem costItem = new CostItem();
+                    costItem.setCostItemID(rs.getInt("costItemID"));
+                    costItem.setCostItemName(rs.getString("costItemName"));
+                    costItem.setCostCategoryID(rs.getInt("costCategoryID"));
+                    costItem.setCostItemNotes(rs.getString("costItemNotes"));
+                    costItem.setCostItemUnit(rs.getString("costItemUnit"));
+                    costItem.setCostItemMaterialUnitCost(rs.getBigDecimal("costItemMaterialUnitCost"));
+                    costItem.setCostItemLaborUnitCost(rs.getBigDecimal("costItemLaborUnitCost"));
+                    costItems.add(costItem);
+                }
+            }
+
+        } catch (SQLException e) {
+            log.error("Error retrieving cost items by category ID: {}", e.getMessage());
         }
         return costItems;
     }

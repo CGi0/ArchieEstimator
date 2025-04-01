@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class CostCategoryDAO implements DataAccessObject<CostCategory> {
+public class CostCategoryDAO implements DataAccessObjectInterface<CostCategory> {
     @Override
     public void save(CostCategory object) {
         final String SAVE_COST_CATEGORY_SQL = "INSERT INTO CostCategories (costCategoryName, costGroupID) VALUES (?, ?)";
@@ -106,7 +106,7 @@ public class CostCategoryDAO implements DataAccessObject<CostCategory> {
             pstmt.setInt(1, id);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    costCategory = new CostCategory(rs.getInt("costCategoryID"), rs.getInt("costGroupID"), rs.getString("costCategoryName"));
+                    costCategory = new CostCategory(rs.getInt("costCategoryID"), rs.getString("costCategoryName"), rs.getInt("costGroupID"));
                 }
             }
 
@@ -128,7 +128,7 @@ public class CostCategoryDAO implements DataAccessObject<CostCategory> {
             pstmt.setString(1, name);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    costCategory = new CostCategory(rs.getInt("costCategoryID"), rs.getInt("costGroupID"), rs.getString("costCategoryName"));
+                    costCategory = new CostCategory(rs.getInt("costCategoryID"), rs.getString("costCategoryName"), rs.getInt("costGroupID"));
                 }
             }
 
@@ -149,8 +149,30 @@ public class CostCategoryDAO implements DataAccessObject<CostCategory> {
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
-                CostCategory costCategory = new CostCategory(rs.getInt("costCategoryID"), rs.getInt("costGroupID"), rs.getString("costCategoryName"));
+                CostCategory costCategory = new CostCategory(rs.getInt("costCategoryID"), rs.getString("costCategoryName"), rs.getInt("costGroupID"));
                 costCategories.add(costCategory);
+            }
+
+        } catch (SQLException e) {
+            log.error("Error getting all cost categories: {}", e.getMessage());
+        }
+
+        return costCategories;
+    }
+
+    public List<CostCategory> getAll(int id) {
+        final String GET_ALL_COST_CATEGORIES_SQL = "SELECT * FROM CostCategories WHERE costGroupID = ?";
+        List<CostCategory> costCategories = new ArrayList<>();
+
+        try (Connection conn = SQLConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(GET_ALL_COST_CATEGORIES_SQL)) {
+
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    CostCategory costCategory = new CostCategory(rs.getInt("costCategoryID"), rs.getString("costCategoryName"), rs.getInt("costGroupID"));
+                    costCategories.add(costCategory);
+                }
             }
 
         } catch (SQLException e) {

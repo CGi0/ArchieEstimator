@@ -10,8 +10,7 @@ import java.sql.Statement;
 @Slf4j
 public class InitializeTables {
     private static final String costBookTableName = "CostBook";
-
-    public void start(){
+    public static void start(){
         if (!tableExists(costBookTableName)) {
             String createTableSQL = """
             CREATE TABLE CostBook (
@@ -25,8 +24,8 @@ public class InitializeTables {
             );
             CREATE TABLE CostCategories (
                 costCategoryID   INTEGER PRIMARY KEY AUTOINCREMENT,
-                costGroupID      INTEGER REFERENCES CostGroups (costGroupID),
-                costCategoryName TEXT
+                costCategoryName TEXT,
+                costGroupID      INTEGER REFERENCES CostGroups (costGroupID)
             );
             CREATE TABLE CostGroups (
                 costGroupID   INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -45,7 +44,7 @@ public class InitializeTables {
         }
     }
 
-    private boolean tableExists(String tableName) {
+    private static boolean tableExists(String tableName) {
         String checkTableSQL = "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='" + tableName + "'";
 
         try (Connection conn = SQLConnection.getConnection();

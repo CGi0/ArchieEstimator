@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
+  All rights reserved. Use is subject to license terms.
+
+  This file is available and licensed under the following license:
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the distribution.
+  - Neither the name of Oracle Corporation nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lbycpd2.archieestimator.CostBookController">
+  <children>
+    <AnchorPane maxHeight="720.0" maxWidth="1280.0" minHeight="360.0" minWidth="640.0" prefHeight="432.0" prefWidth="768.0" VBox.vgrow="ALWAYS">
+      <children>
+            <Label fx:id="labelGroup" layoutX="14.0" layoutY="14.0" text="Group:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <ChoiceBox fx:id="choiceBoxGroup" layoutX="14.0" layoutY="31.0" onAction="#onGroupAction" prefHeight="25.0" prefWidth="186.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="440.0" AnchorPane.topAnchor="31.0" />
+            <Label fx:id="labelCategory" layoutX="14.0" layoutY="69.0" text="Category:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="69.0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <ListView fx:id="listViewCategory" layoutX="14.0" layoutY="117.0" onMouseClicked="#onCategoryClick" prefHeight="231.0" prefWidth="186.0" AnchorPane.bottomAnchor="52.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="440.0" AnchorPane.topAnchor="117.0" />
+            <Label fx:id="labelCostItem" layoutX="227.0" layoutY="14.0" text="Cost Item:" AnchorPane.rightAnchor="355.0" AnchorPane.topAnchor="14.0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <ListView fx:id="listViewCostItem" layoutX="227.0" layoutY="62.0" onMouseClicked="#onCostItemClick" prefHeight="287.0" prefWidth="186.0" AnchorPane.bottomAnchor="51.0" AnchorPane.rightAnchor="227.0" AnchorPane.topAnchor="62.0" />
+            <Label fx:id="labelName" layoutX="428.0" layoutY="14.0" text="Name:" AnchorPane.rightAnchor="175.0" AnchorPane.topAnchor="14.0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="textFieldName" editable="false" layoutX="428.0" layoutY="31.0" prefHeight="25.0" prefWidth="186.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="31.0" />
+            <Label fx:id="labelNotes" layoutX="428.0" layoutY="61.0" text="Notes:" AnchorPane.rightAnchor="175.0" AnchorPane.topAnchor="61.0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <TextArea fx:id="textAreaNotes" editable="false" layoutX="428.0" layoutY="78.0" prefHeight="129.0" prefWidth="186.0" AnchorPane.bottomAnchor="193.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="78.0" />
+            <Label fx:id="labelUnitMeasurement" layoutX="431.0" layoutY="209.0" text="Unit Measurement:" AnchorPane.bottomAnchor="174.0" AnchorPane.rightAnchor="100.0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="textFieldUnitMeasurement" editable="false" layoutX="428.0" layoutY="226.0" prefHeight="25.0" prefWidth="186.0" AnchorPane.bottomAnchor="149.0" AnchorPane.rightAnchor="26.0" />
+            <Label fx:id="labelMaterialUnitCost" layoutX="431.0" layoutY="251.0" text="Material Unit Cost:" AnchorPane.bottomAnchor="132.0" AnchorPane.rightAnchor="103.0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="textFieldMaterialUnitCost" editable="false" layoutX="428.0" layoutY="268.0" prefHeight="25.0" prefWidth="186.0" AnchorPane.bottomAnchor="107.0" AnchorPane.rightAnchor="26.0" />
+            <Label fx:id="labelLaborUnitCost" layoutX="431.0" layoutY="293.0" text="Labor Unit Cost:" AnchorPane.bottomAnchor="90.0" AnchorPane.rightAnchor="118.0">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="textFieldLaborUnitCost" editable="false" layoutX="428.0" layoutY="310.0" prefHeight="25.0" prefWidth="186.0" AnchorPane.bottomAnchor="65.0" AnchorPane.rightAnchor="26.0" />
+            <Button fx:id="buttonEditGroups" layoutX="14.0" layoutY="361.0" mnemonicParsing="false" onAction="#onEditGroupsAction" prefHeight="25.0" prefWidth="100.0" text="Edit Groups" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" />
+            <Button fx:id="buttonEditCategories" layoutX="117.0" layoutY="361.0" mnemonicParsing="false" onAction="#onEditCategoriesAction" prefHeight="25.0" prefWidth="100.0" text="Edit Categories" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="117.0" />
+            <Button fx:id="buttonEditCostItem" layoutX="220.0" layoutY="361.0" mnemonicParsing="false" onAction="#onEditCostItemAction" prefHeight="25.0" prefWidth="100.0" text="Edit Cost Item" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="220.0" />
+            <Button fx:id="buttonApplyChanges" layoutX="515.0" layoutY="361.0" mnemonicParsing="false" onAction="#onApplyChangesAction" prefHeight="25.0" prefWidth="100.0" text="Apply Changes" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="25.0" />
+            <TextField fx:id="textFieldCostItem" layoutX="227.0" layoutY="31.0" onAction="#onCostItemSearch" onKeyTyped="#onCostItemSearch" prefHeight="25.0" prefWidth="186.0" promptText="Search Cost Item" AnchorPane.bottomAnchor="344.0" AnchorPane.rightAnchor="227.0" AnchorPane.topAnchor="31.0" />
+            <TextField fx:id="textFieldCategory" layoutX="14.0" layoutY="86.0" onAction="#onCategorySearch" onKeyTyped="#onCategorySearch" prefHeight="25.0" prefWidth="186.0" promptText="Search Category" AnchorPane.bottomAnchor="289.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="440.0" AnchorPane.topAnchor="86.0" />
+      </children>
+    </AnchorPane>
+  </children>
+</VBox>

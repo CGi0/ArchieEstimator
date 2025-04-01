@@ -8,6 +8,12 @@ import lombok.*;
 @RequiredArgsConstructor
 public class CostCategory {
     private int costCategoryID;
-    private int costGroupID;
     private final String costCategoryName;
+    private final int costGroupID;
+
+
+    @Override
+    public String toString() {
+        return costCategoryName;
+    }
 }

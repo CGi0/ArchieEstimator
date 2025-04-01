@@ -22,5 +22,10 @@ public class HelloController {
         t.start();
         CostBookDAO dao = new CostBookDAO();
         dao.save(ci);
+        dao.save(ci);
+        dao.save(ci);
+        dao.delete(1);
+        dao.save(ci);
+        dao.save(ci);
     }
 }

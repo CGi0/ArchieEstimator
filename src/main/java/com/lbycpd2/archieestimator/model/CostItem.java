@@ -31,4 +31,9 @@ public class CostItem {
         this.costItemMaterialUnitCost = materialUnitCost;
         this.costItemLaborUnitCost = LaborUnitCost;
     }
+
+    @Override
+    public String toString() {
+        return costItemName;
+    }
 }
