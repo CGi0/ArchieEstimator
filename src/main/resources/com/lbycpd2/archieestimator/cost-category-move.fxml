@@ -43,38 +43,27 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lbycpd2.archieestimator.CostGroupController">
+<StackPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lbycpd2.archieestimator.CostCategoryMoveController">
    <VBox alignment="CENTER" maxHeight="500.0" maxWidth="500.0" minHeight="250.0" minWidth="250.0" prefHeight="325.0" prefWidth="325.0">
       <AnchorPane prefHeight="228.0" prefWidth="306.0">
-         <Label fx:id="labelGroupName" layoutX="53.0" layoutY="104.0" text="Group Name:" AnchorPane.leftAnchor="53.0" AnchorPane.topAnchor="104.0">
+         <Label fx:id="labelCategoryName" layoutX="53.0" layoutY="45.0" text="Category Name:" AnchorPane.leftAnchor="53.0" AnchorPane.topAnchor="45.0">
             <font>
                <Font name="System Bold" size="12.0" />
             </font></Label>
-         <TextField fx:id="textFieldGroupName" layoutX="53.0" layoutY="121.0" prefHeight="25.0" prefWidth="220.0" promptText="Add/Rename Group Name" AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="121.0" />
-         <HBox alignment="CENTER" layoutX="53.0" layoutY="154.0" prefHeight="25.0" prefWidth="220.0" AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="52.0">
-            <Button fx:id="buttonAddGroup" alignment="CENTER" mnemonicParsing="false" onAction="#onAddGroupAction" prefHeight="25.0" prefWidth="96.0" text="Add">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </Button>
-         </HBox>
-         <Label fx:id="labelExistingGroups" layoutX="53.0" layoutY="14.0" text="Existing Groups:" AnchorPane.leftAnchor="53.0" AnchorPane.topAnchor="14.0">
+         <TextField fx:id="textFieldCategoryName" editable="false" layoutX="53.0" layoutY="62.0" prefHeight="25.0" prefWidth="220.0" AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="62.0" />
+         <Label fx:id="labelExistingGroups" layoutX="53.0" layoutY="107.0" text="Existing Groups:" AnchorPane.leftAnchor="53.0" AnchorPane.topAnchor="107.0">
             <font>
                <Font name="System Bold" size="12.0" />
             </font></Label>
-         <ChoiceBox fx:id="choiceBoxGroup" layoutX="53.0" layoutY="31.0" prefHeight="25.0" prefWidth="220.0" AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="31.0" />
-         <HBox alignment="CENTER" layoutX="53.0" layoutY="65.0" prefHeight="25.0" prefWidth="220.0"
-               AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="65.0">
-            <Button fx:id="buttonRenameGroup" alignment="CENTER" mnemonicParsing="false" onAction="#onRenameGroupAction"
-                    prefHeight="25.0" prefWidth="250.0" text="Rename">
+         <ChoiceBox fx:id="choiceBoxGroup" layoutX="53.0" layoutY="124.0" prefHeight="25.0" prefWidth="220.0" AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="124.0" />
+         <HBox alignment="CENTER" layoutX="53.0" layoutY="158.0" prefHeight="25.0" prefWidth="220.0" AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="158.0">
+            <Button fx:id="buttonMoveCategory" alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#onMoveCategoryAction" prefHeight="25.0" prefWidth="250.0" text="Move to...">
                <HBox.margin>
-                  <Insets right="27.0"/>
+                  <Insets right="27.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="buttonRemoveGroup" mnemonicParsing="false" onAction="#onRemoveGroupAction" prefHeight="25.0"
-                    prefWidth="250.0" text="Remove"/>
+            <Button fx:id="buttonBack" cancelButton="true" mnemonicParsing="false" onAction="#onBackAction" prefHeight="25.0" prefWidth="250.0" text="Back" />
          </HBox>
-         <Button fx:id="buttonBack" cancelButton="true" layoutX="115.0" layoutY="203.0" mnemonicParsing="false" onAction="#onBackAction" prefHeight="25.0" prefWidth="96.0" text="Back" AnchorPane.leftAnchor="115.0" AnchorPane.rightAnchor="114.0" AnchorPane.topAnchor="203.0" />
       </AnchorPane>
    </VBox>
 </StackPane>

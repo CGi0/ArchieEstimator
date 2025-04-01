@@ -42,51 +42,41 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<StackPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="com.lbycpd2.archieestimator.CostCategoryController">
-   <VBox alignment="CENTER" maxHeight="512.0" maxWidth="512.0" minHeight="256.0" minWidth="144.0" prefHeight="512.0"
-         prefWidth="288.0">
+<StackPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lbycpd2.archieestimator.CostCategoryController">
+   <VBox alignment="CENTER" maxHeight="512.0" maxWidth="512.0" minHeight="256.0" minWidth="144.0" prefHeight="512.0" prefWidth="288.0">
       <AnchorPane prefHeight="478.0" prefWidth="320.0">
-         <Label fx:id="labelExistingGroups" layoutX="53.0" layoutY="1.0" text="Existing Groups:"
-                AnchorPane.leftAnchor="53.0" AnchorPane.topAnchor="1.0"/>
-         <ChoiceBox fx:id="choiceBoxGroup" layoutX="53.0" layoutY="18.0" prefHeight="25.0" prefWidth="220.0"
-                    AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="18.0"/>
-         <Label fx:id="labelCategoryName" layoutX="53.0" layoutY="50.0" text="Category Name:"
-                AnchorPane.leftAnchor="53.0" AnchorPane.topAnchor="50.0"/>
-         <TextField fx:id="textFieldCategoryName" layoutX="53.0" layoutY="67.0" prefHeight="25.0"
-                    prefWidth="220.0" promptText="Add/Rename Category" AnchorPane.leftAnchor="53.0"
-                    AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="67.0"/>
-         <HBox alignment="CENTER" layoutX="53.0" layoutY="100.0" prefHeight="25.0" prefWidth="220.0"
-               AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="52.0">
-            <Button fx:id="buttonAddToGroup" alignment="CENTER" mnemonicParsing="false"
-                    onAction="#onAddCategoryAction" prefHeight="25.0" prefWidth="187.0" text="Add to Group">
+         <Label fx:id="labelExistingGroups" layoutX="53.0" layoutY="1.0" text="Existing Groups:" AnchorPane.leftAnchor="53.0" AnchorPane.topAnchor="1.0">
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font></Label>
+         <ChoiceBox fx:id="choiceBoxGroup" layoutX="53.0" layoutY="18.0" prefHeight="25.0" prefWidth="220.0" AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="18.0" />
+         <Label fx:id="labelCategoryName" layoutX="53.0" layoutY="50.0" text="Category Name:" AnchorPane.leftAnchor="53.0" AnchorPane.topAnchor="50.0">
+            <font>
+               <Font name="System Bold" size="12.0" />
+            </font></Label>
+         <TextField fx:id="textFieldCategoryName" layoutX="53.0" layoutY="67.0" prefHeight="25.0" prefWidth="220.0" promptText="Add/Rename Category" AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="67.0" />
+         <HBox alignment="CENTER" layoutX="53.0" layoutY="100.0" prefHeight="25.0" prefWidth="220.0" AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="52.0">
+            <Button fx:id="buttonAddToGroup" alignment="CENTER" mnemonicParsing="false" onAction="#onAddCategoryAction" prefHeight="25.0" prefWidth="187.0" text="Add to Group">
                <HBox.margin>
-                  <Insets/>
+                  <Insets />
                </HBox.margin>
             </Button>
          </HBox>
-         <ListView fx:id="listViewCategory" layoutX="54.0" layoutY="135.0" prefHeight="211.0" prefWidth="183.0"
-                   AnchorPane.leftAnchor="54.0" AnchorPane.rightAnchor="51.0" AnchorPane.topAnchor="135.0"/>
-         <HBox alignment="CENTER" layoutX="54.0" layoutY="359.0" prefHeight="25.0" prefWidth="220.0"
-               AnchorPane.leftAnchor="54.0" AnchorPane.rightAnchor="51.0" AnchorPane.topAnchor="359.0">
-            <Button fx:id="buttonRenameCategory" alignment="CENTER" mnemonicParsing="false"
-                    onAction="#onRenameCategoryAction" prefHeight="25.0" prefWidth="250.0" text="Rename">
+         <ListView fx:id="listViewCategory" layoutX="54.0" layoutY="135.0" prefHeight="211.0" prefWidth="183.0" AnchorPane.leftAnchor="54.0" AnchorPane.rightAnchor="51.0" AnchorPane.topAnchor="135.0" />
+         <HBox alignment="CENTER" layoutX="54.0" layoutY="359.0" prefHeight="25.0" prefWidth="220.0" AnchorPane.leftAnchor="54.0" AnchorPane.rightAnchor="51.0" AnchorPane.topAnchor="359.0">
+            <Button fx:id="buttonRenameCategory" alignment="CENTER" mnemonicParsing="false" onAction="#onRenameCategoryAction" prefHeight="25.0" prefWidth="250.0" text="Rename">
                <HBox.margin>
-                  <Insets right="27.0"/>
+                  <Insets right="27.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="buttonRemoveCategory" mnemonicParsing="false" onAction="#onRemoveCategoryAction"
-                    prefHeight="25.0" prefWidth="250.0" text="Remove"/>
+            <Button fx:id="buttonRemoveCategory" mnemonicParsing="false" onAction="#onRemoveCategoryAction" prefHeight="25.0" prefWidth="250.0" text="Remove" />
          </HBox>
-         <HBox alignment="CENTER" layoutX="34.0" layoutY="395.0" prefHeight="25.0" prefWidth="220.0"
-               AnchorPane.leftAnchor="34.0" AnchorPane.rightAnchor="51.0" AnchorPane.topAnchor="395.0">
-            <Button fx:id="buttonMoveToGroup" alignment="CENTER" mnemonicParsing="false"
-                    onAction="#onMoveToGroupAction" prefHeight="25.0" prefWidth="184.0" text="Move to Group"/>
+         <HBox alignment="CENTER" layoutX="44.0" layoutY="392.0" prefHeight="25.0" prefWidth="220.0" AnchorPane.leftAnchor="44.0" AnchorPane.rightAnchor="41.0" AnchorPane.topAnchor="392.0">
+            <Button fx:id="buttonMoveToGroup" alignment="CENTER" mnemonicParsing="false" onAction="#onMoveToGroupAction" prefHeight="25.0" prefWidth="184.0" text="Move to Group" />
          </HBox>
-         <Button fx:id="buttonBack" cancelButton="true" layoutX="117.0" layoutY="453.0" mnemonicParsing="false"
-                 onAction="#onBackAction" prefHeight="25.0" prefWidth="96.0" text="Back"
-                 AnchorPane.leftAnchor="117.0" AnchorPane.rightAnchor="112.0" AnchorPane.topAnchor="453.0"/>
+         <Button fx:id="buttonBack" cancelButton="true" layoutX="117.0" layoutY="453.0" mnemonicParsing="false" onAction="#onBackAction" prefHeight="25.0" prefWidth="96.0" text="Back" AnchorPane.leftAnchor="117.0" AnchorPane.rightAnchor="112.0" AnchorPane.topAnchor="453.0" />
       </AnchorPane>
    </VBox>
 </StackPane>

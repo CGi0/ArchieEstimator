@@ -40,6 +40,15 @@ public class CostGroupController {
     }
 
     public void onAddGroupAction(){
+        if (textFieldGroupName.getText().isEmpty()) {
+            Alert warningAlert = new Alert(Alert.AlertType.WARNING);
+            warningAlert.setTitle("Warning Dialog");
+            warningAlert.setHeaderText("Empty Group Name");
+            warningAlert.setContentText("Cannot have an empty group name");
+            warningAlert.showAndWait();
+            return;
+        }
+
         CostGroup addCG = new CostGroup(textFieldGroupName.getText());
         cgDAO.save(addCG);
         int id = cgDAO.getID(addCG);
@@ -56,6 +65,12 @@ public class CostGroupController {
             choiceBoxGroup.getSelectionModel().select(renameCG);
         } catch (Exception e) {
             log.warn(e.getMessage());
+
+            Alert warningAlert = new Alert(Alert.AlertType.WARNING);
+            warningAlert.setTitle("Warning Dialog");
+            warningAlert.setHeaderText("No Group Selected");
+            warningAlert.setContentText("No group selected or group ID is null");
+            warningAlert.showAndWait();
         }
     }
 
@@ -63,7 +78,7 @@ public class CostGroupController {
         if (groupSelection != null) {
             Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
             confirmDialog.setTitle("Confirmation Dialog");
-            confirmDialog.setHeaderText(null);
+            confirmDialog.setHeaderText("Delete Cost Group?");
             confirmDialog.setContentText(String.format("Are you sure you want to remove %s\nand all its associated categories and items?", groupSelection.getCostGroupName()));
 
             Optional<ButtonType> result = confirmDialog.showAndWait();
@@ -82,7 +97,7 @@ public class CostGroupController {
         } else {
             Alert warningAlert = new Alert(Alert.AlertType.WARNING);
             warningAlert.setTitle("Warning Dialog");
-            warningAlert.setHeaderText(null);
+            warningAlert.setHeaderText("No Group Selected");
             warningAlert.setContentText("No group selected or group ID is null");
             warningAlert.showAndWait();
         }

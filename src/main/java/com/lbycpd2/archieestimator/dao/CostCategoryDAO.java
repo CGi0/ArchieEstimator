@@ -54,21 +54,38 @@ public class CostCategoryDAO implements DataAccessObjectInterface<CostCategory> 
 
     @Override
     public void delete(int id) {
+        final String DELETE_COST_ITEMS_SQL = "DELETE FROM CostBook WHERE costCategoryID = ?";
         final String DELETE_COST_CATEGORY_SQL = "DELETE FROM CostCategories WHERE costCategoryID = ?";
 
-        try (Connection conn = SQLConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(DELETE_COST_CATEGORY_SQL)) {
+        try (Connection conn = SQLConnection.getConnection()) {
+            conn.setAutoCommit(false); // Start transaction
 
-            pstmt.setInt(1, id);
-            int rowsAffected = pstmt.executeUpdate();
-            if (rowsAffected > 0) {
-                log.info("Cost category deleted successfully!");
-            } else {
-                log.info("No cost category found with the given ID.");
+            try (PreparedStatement pstmtDeleteItems = conn.prepareStatement(DELETE_COST_ITEMS_SQL);
+                 PreparedStatement pstmtDeleteCategory = conn.prepareStatement(DELETE_COST_CATEGORY_SQL)) {
+
+                // Delete associated cost items
+                pstmtDeleteItems.setInt(1, id);
+                pstmtDeleteItems.executeUpdate();
+
+                // Delete cost category
+                pstmtDeleteCategory.setInt(1, id);
+                int rowsAffected = pstmtDeleteCategory.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    conn.commit(); // Commit transaction
+                    log.info("Cost category and associated cost items deleted successfully!");
+                } else {
+                    conn.rollback(); // Rollback transaction
+                    log.info("No cost category found with the given ID.");
+                }
+
+            } catch (SQLException e) {
+                conn.rollback(); // Rollback transaction on error
+                log.error("Error deleting cost category and associated cost items: {}", e.getMessage());
             }
 
         } catch (SQLException e) {
-            log.error("Error deleting cost category: {}", e.getMessage());
+            log.error("Database connection error: {}", e.getMessage());
         }
     }
 

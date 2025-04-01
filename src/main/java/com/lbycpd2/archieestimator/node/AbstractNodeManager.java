@@ -26,7 +26,7 @@ public abstract class AbstractNodeManager<T> {
     protected void updateItems() {
         if (itemList.isEmpty()) {
             itemList.add(defaultItem);
-            log.debug("Node is empty");
+            log.debug("{} is empty", getClass().getSimpleName());
         } else {
             itemList.sort(Comparator.comparing(Object::toString));
         }

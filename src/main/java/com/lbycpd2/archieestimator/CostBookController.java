@@ -9,6 +9,7 @@ import com.lbycpd2.archieestimator.model.CostItem;
 import com.lbycpd2.archieestimator.node.ChoiceBoxNodeManager;
 import com.lbycpd2.archieestimator.node.ListViewNodeManager;
 import com.lbycpd2.archieestimator.node.SearchManager;
+import com.lbycpd2.archieestimator.service.CostItemService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -59,6 +60,8 @@ public class CostBookController {
     private final SearchManager<CostCategory> costCategorySearchManager = new SearchManager<>();
     private final SearchManager<CostItem> costItemSearchManager = new SearchManager<>();
 
+    private final CostItemService costItemService = CostItemService.getInstance();
+
     public void initialize() {
         choiceBoxCostGroupManager = new ChoiceBoxNodeManager<>(choiceBoxGroup, new CostGroup("No groups found"));
         listViewCostCategoryManager =
@@ -106,7 +109,23 @@ public class CostBookController {
         }
     }
 
-    public void onEditCostItemAction() {}
+    public void onEditCostItemAction() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("cost-item-edit.fxml"));
+            costItemService.setCostItemSelection(costItemSelection);
+            Parent root = loader.load();
+            CostItemEditController controller = loader.getController();
+            controller.setCostBookController(this);
+
+            Stage stage = new Stage();
+            stage.setTitle("Edit Cost Item");
+            stage.setScene(new Scene(root));
+            stage.setOnCloseRequest(event -> refreshCostGroups());
+            stage.show();
+        } catch (IOException e) {
+            log.warn(e.getMessage());
+        }
+    }
 
     public void onApplyChangesAction() {}
 

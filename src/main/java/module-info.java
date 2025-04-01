@@ -7,6 +7,7 @@ module com.lbycpd2.archieestimator {
     requires java.sql;
     requires org.apache.logging.log4j.core;
     requires static lombok;
+    requires java.naming;
 
 
     opens com.lbycpd2.archieestimator to javafx.fxml;

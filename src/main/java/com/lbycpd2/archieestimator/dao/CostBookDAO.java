@@ -40,7 +40,7 @@ public class CostBookDAO implements DataAccessObjectInterface<CostItem> {
     @Override
     public void update(int id, CostItem object) {
         final String UPDATE_COST_ITEM_SQL = """
-                UPDATE CostItems SET costItemName = ?,
+                UPDATE CostBook SET costItemName = ?,
                 costCategoryID = ?,
                 costItemNotes = ?,
                 costItemUnit = ?,
@@ -57,13 +57,14 @@ public class CostBookDAO implements DataAccessObjectInterface<CostItem> {
             pstmt.setString(4, object.getCostItemUnit());
             pstmt.setBigDecimal(5, object.getCostItemMaterialUnitCost());
             pstmt.setBigDecimal(6, object.getCostItemLaborUnitCost());
+            pstmt.setInt(7, id);
 
             int rowsAffected = pstmt.executeUpdate();
             if (rowsAffected > 0) {
                 log.info("Cost item updated successfully!");
 
             } else {
-                log.info("No cost item found with the given ID.");
+                log.info("No cost item found with the given ID: {}.", id);
             }
 
         } catch (SQLException e) {
