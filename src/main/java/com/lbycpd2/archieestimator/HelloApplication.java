@@ -1,7 +1,6 @@
 package com.lbycpd2.archieestimator;
 
 import com.lbycpd2.archieestimator.util.InitializeTables;
-import com.lbycpd2.archieestimator.util.SQLConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,15 +14,15 @@ import java.sql.SQLException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException, SQLException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("cost-book.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("cost-table.fxml"));
 
         InitializeTables.start();
 
         Scene scene = new Scene(fxmlLoader.load());
 
         // TEMPORARY FOR COSTBOOK
-        stage.setMaxWidth(1280);
-        stage.setMaxHeight(720);
+        stage.setMaxWidth(1366);
+        stage.setMaxHeight(768);
 
         stage.setTitle("Hello!");
         stage.setScene(scene);

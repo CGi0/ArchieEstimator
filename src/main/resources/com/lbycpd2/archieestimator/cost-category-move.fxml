@@ -50,7 +50,7 @@
             <font>
                <Font name="System Bold" size="12.0" />
             </font></Label>
-         <TextField fx:id="textFieldCategoryName" editable="false" layoutX="53.0" layoutY="62.0" prefHeight="25.0" prefWidth="220.0" AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="62.0" />
+         <TextField fx:id="textFieldCategoryName" editable="false" focusTraversable="false" layoutX="53.0" layoutY="62.0" prefHeight="25.0" prefWidth="220.0" AnchorPane.leftAnchor="53.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="62.0" />
          <Label fx:id="labelExistingGroups" layoutX="53.0" layoutY="107.0" text="Existing Groups:" AnchorPane.leftAnchor="53.0" AnchorPane.topAnchor="107.0">
             <font>
                <Font name="System Bold" size="12.0" />

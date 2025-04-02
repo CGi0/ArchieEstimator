@@ -11,15 +11,11 @@ import com.lbycpd2.archieestimator.node.ListViewNodeManager;
 import com.lbycpd2.archieestimator.node.SearchManager;
 import com.lbycpd2.archieestimator.service.CostItemService;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,18 +23,10 @@ import static com.lbycpd2.archieestimator.util.DefaultCostCategory.DEFAULT_COST_
 import static com.lbycpd2.archieestimator.util.DefaultCostItem.DEFAULT_COST_ITEM;
 
 @Slf4j
-public class CostBookController {
+public class CostBookSelectorController {
     @Setter
     private CostTableController costTableController;
 
-    @FXML private Label labelGroup;
-    @FXML private Label labelCategory;
-    @FXML private Label labelCostItem;
-    @FXML private Label labelName;
-    @FXML private Label labelNotes;
-    @FXML private Label labelUnitMeasurement;
-    @FXML private Label labelMaterialUnitCost;
-    @FXML private Label labelLaborUnitCost;
     @FXML private ChoiceBox<CostGroup> choiceBoxGroup;
     @FXML private ListView<CostCategory> listViewCategory;
     @FXML private ListView<CostItem> listViewCostItem;
@@ -49,9 +37,6 @@ public class CostBookController {
     @FXML private TextField textFieldUnitMeasurement;
     @FXML private TextField textFieldMaterialUnitCost;
     @FXML private TextField textFieldLaborUnitCost;
-    @FXML private Button buttonEditGroups;
-    @FXML private Button buttonEditCategories;
-    @FXML private Button buttonEditCostItem;
     @FXML private Button buttonApplyChanges;
 
     private CostGroup groupSelection;
@@ -65,6 +50,7 @@ public class CostBookController {
     private final SearchManager<CostItem> costItemSearchManager = new SearchManager<>();
 
     private final CostItemService costItemService = CostItemService.getInstance();
+    private final CostBookDAO cbDAO = new CostBookDAO();
 
     public void initialize() {
         choiceBoxCostGroupManager = new ChoiceBoxNodeManager<>(choiceBoxGroup, new CostGroup("No groups found"));
@@ -75,74 +61,25 @@ public class CostBookController {
         choiceBoxCostGroupManager.initialize(fetchCostGroups());
     }
 
-    public void refreshCostGroups() {
-        choiceBoxCostGroupManager.initialize(fetchCostGroups());
-    }
-
-    public void onEditGroupsAction() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("cost-group.fxml"));
-            Parent root = loader.load();
-            CostGroupController controller = loader.getController();
-            controller.setCostBookController(this); // Pass the reference of CostBookController to CostGroupController
-
-            Stage stage = new Stage();
-            stage.setTitle("Edit Cost Groups");
-            stage.setScene(new Scene(root));
-            stage.setOnCloseRequest(event -> refreshCostGroups()); // Refresh cost groups when the window is closed
-            stage.show();
-        } catch (IOException e) {
-            log.warn(e.getMessage());
-        }
-    }
-
-    public void onEditCategoriesAction() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("cost-category.fxml"));
-            Parent root = loader.load();
-            CostCategoryController controller = loader.getController();
-            controller.setCostBookController(this); // Pass the reference of CostBookController to CostGroupController
-
-            Stage stage = new Stage();
-            stage.setTitle("Edit Cost Categories");
-            stage.setScene(new Scene(root));
-            stage.setOnCloseRequest(event -> refreshCostGroups()); // Refresh cost groups when the window is closed
-            stage.show();
-        } catch (IOException e) {
-            log.warn(e.getMessage());
-        }
-    }
-
-    public void onEditCostItemAction() {
-        if (null == costItemSelection) {
+    public void onApplyChangesAction() {
+        try{
+            if (costItemSelection != null) {
+                costItemService.setCostItemSelection(costItemSelection);
+                log.info("Selected Cost Item: {} ({})'", costItemSelection,costItemSelection.getCostItemID());
+            }
+            if (costTableController != null) {
+                costTableController.addCostRow(costItemSelection);
+            }
+            Stage stage = (Stage) buttonApplyChanges.getScene().getWindow();
+            stage.close();
+        } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning Dialog");
             alert.setHeaderText("No Cost Item Selected");
             alert.setContentText("No cost item selected or item ID is null");
             alert.showAndWait();
-            return;
-        }
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("cost-item-edit.fxml"));
-            costItemService.setCostItemSelection(costItemSelection);
-            Parent root = loader.load();
-            CostItemEditController controller = loader.getController();
-            controller.setCostBookController(this);
-
-            Stage stage = new Stage();
-            stage.setTitle("Edit Cost Item");
-            stage.setScene(new Scene(root));
-            stage.setOnCloseRequest(event -> refreshCostGroups());
-            stage.show();
-        } catch (IOException e) {
             log.warn(e.getMessage());
         }
-    }
-
-    public void onApplyChangesAction() {
-        Stage stage = (Stage) buttonApplyChanges.getScene().getWindow();
-        stage.close();
     }
 
     public void onCategorySearch() {

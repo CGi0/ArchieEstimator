@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 import static com.lbycpd2.archieestimator.util.DefaultCostCategory.DEFAULT_COST_CATEGORY;
 
 @Slf4j
-public class CostItemEditController {
+public class CostItemAddController {
     @FXML private Label labelName;
     @FXML private Label labelGroup;
     @FXML private Label labelCategory;
@@ -138,7 +138,7 @@ public class CostItemEditController {
             cbDAO.delete(itemSelection.getCostItemID());
             onBackAction();
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.warn(e.getMessage());
         }
     }
 
