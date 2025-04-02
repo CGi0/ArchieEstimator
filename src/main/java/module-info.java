@@ -8,6 +8,7 @@ module com.lbycpd2.archieestimator {
     requires org.apache.logging.log4j.core;
     requires static lombok;
     requires java.naming;
+    requires jdk.compiler;
 
 
     opens com.lbycpd2.archieestimator to javafx.fxml;

@@ -7,11 +7,9 @@ import com.lbycpd2.archieestimator.model.CostCategory;
 import com.lbycpd2.archieestimator.model.CostGroup;
 import com.lbycpd2.archieestimator.model.CostItem;
 import com.lbycpd2.archieestimator.node.ChoiceBoxNodeManager;
-import com.lbycpd2.archieestimator.service.CostItemService;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
@@ -38,9 +36,6 @@ public class CostItemAddController {
     @FXML private Button buttonDelete;
     @FXML private Button buttonBack;
 
-    @Setter
-    private CostBookController costBookController;
-
     private ChoiceBoxNodeManager<CostGroup> choiceBoxGroupManager;
     private ChoiceBoxNodeManager<CostCategory> choiceBoxCategoryManager;
 
@@ -48,36 +43,14 @@ public class CostItemAddController {
     private final CostCategoryDAO ccDAO = new CostCategoryDAO();
     private final CostBookDAO cbDAO = new CostBookDAO();
 
-    private final CostItemService costItemService = CostItemService.getInstance();
-
-    private final CostItem itemSelection = costItemService.getCostItemSelection();
-    private final CostCategory initialItemCategory = ccDAO.get(itemSelection.getCostCategoryID());
-    private final CostGroup initialItemGroup = cgDAO.get(initialItemCategory.getCostGroupID());
-
     private CostGroup groupSelection;
     private CostCategory categorySelection;
 
     public void initialize() {
-        groupSelection = initialItemGroup;
-        categorySelection = initialItemCategory;
         initializeManagers();
         choiceBoxGroup.getSelectionModel().select(groupSelection);
         choiceBoxCategory.getSelectionModel().select(categorySelection);
         initializeListeners();
-        initializeText();
-
-    }
-
-    private void initializeText(){
-        try {
-            textFieldName.setText(itemSelection.getCostItemName());
-            textAreaNotes.setText(itemSelection.getCostItemNotes());
-            textFieldUnitMeasurement.setText(itemSelection.getCostItemUnit());
-            textFieldMaterialUnitCost.setText(String.valueOf(itemSelection.getCostItemMaterialUnitCost()));
-            textFieldLaborUnitCost.setText(String.valueOf(itemSelection.getCostItemLaborUnitCost()));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
     }
 
     private void initializeManagers() {
@@ -89,10 +62,14 @@ public class CostItemAddController {
 
     private void initChoiceBoxGroup(){
         choiceBoxGroupManager.initialize(cgDAO.getAll());
+        choiceBoxGroup.getSelectionModel().selectFirst();
+        groupSelection = choiceBoxGroup.getSelectionModel().getSelectedItem();
     }
 
     private void initChoiceBoxCategory(){
         choiceBoxCategoryManager.initialize(ccDAO.getAll(groupSelection.getCostGroupID()));
+        choiceBoxCategory.getSelectionModel().selectFirst();
+        categorySelection = choiceBoxCategory.getSelectionModel().getSelectedItem();
     }
 
     private void initializeListeners(){
@@ -118,37 +95,23 @@ public class CostItemAddController {
         if(textFieldsAreNull()){
             return;
         }
-
         try {
-            CostItem updatedCostItem = new CostItem(textFieldName.getText(),
+            CostItem newCostItem = new CostItem(textFieldName.getText(),
                     categorySelection.getCostCategoryID(),
                     textAreaNotes.getText(),
                     textFieldUnitMeasurement.getText(),
                     new BigDecimal(textFieldMaterialUnitCost.getText()),
                     new BigDecimal(textFieldLaborUnitCost.getText()));
-            cbDAO.update(itemSelection.getCostItemID(), updatedCostItem);
+            cbDAO.save(newCostItem);
             onBackAction();
         } catch (Exception e){
             log.error(e.getMessage());
         }
     }
 
-    public void onDeleteAction(){
-        try {
-            cbDAO.delete(itemSelection.getCostItemID());
-            onBackAction();
-        } catch (Exception e) {
-            log.warn(e.getMessage());
-        }
-    }
-
     public void onBackAction(){
         if(textFieldsAreNull()){
             return;
-        }
-
-        if (costBookController != null) {
-            costBookController.refreshCostGroups(); // Refresh cost groups in CostBookController
         }
         Stage stage = (Stage) buttonBack.getScene().getWindow();
         stage.close();
