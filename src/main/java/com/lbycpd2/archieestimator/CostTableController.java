@@ -22,8 +22,11 @@ import java.util.Optional;
 @Slf4j
 public class CostTableController {
 
+    @FXML private TreeTableView<SummaryRow> treeTableViewSummary;
     @FXML private TabPane tabPane;
     @FXML private TextField textFieldSubtotalCost;
+    @FXML private TreeTableColumn<SummaryRow, String> colTableItem;
+    @FXML private TreeTableColumn<SummaryRow, BigDecimal> colSubtotalCost;
 
     private ContextMenu contextMenu;
     private final ObservableList<TabTable> tabTablesList = FXCollections.observableArrayList();
@@ -38,6 +41,23 @@ public class CostTableController {
         });
 
         addNewTab("Default Tab");
+
+        TreeItem<SummaryRow> rootTreeItem = new TreeItem<>(new SummaryRow());
+        TreeItem<SummaryRow> summaryRowTreeItem = new TreeItem<>(new SummaryRow(tabTablesList.getFirst()));
+
+        treeTableViewSummary.setRoot(rootTreeItem);
+        treeTableViewSummary.setShowRoot(false);
+        treeTableViewSummary.getRoot().getChildren().add(summaryRowTreeItem);
+
+        colTableItem.setCellValueFactory(param -> param.getValue().getValue().rowNameProperty());
+        colSubtotalCost.setCellValueFactory(param -> param.getValue().getValue().rowTotalCostProperty());
+    }
+
+    // TODO: updateTreeTableViewSummary method
+    private void updateTreeTableViewSummary(){
+        for (TabTable tabTable : tabTablesList) {
+
+        }
     }
 
     public void updateSubtotal() {
