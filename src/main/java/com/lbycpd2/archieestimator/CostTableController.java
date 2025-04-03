@@ -58,7 +58,6 @@ public class CostTableController {
         colSubtotalCost.setCellValueFactory(param -> param.getValue().getValue().rowTotalCostProperty());
     }
 
-    // TODO: updateTreeTableViewSummary method
     private void updateTreeTableViewSummary(){
         treeTableViewSummary.getRoot().getChildren().clear();
         for (TabTable tabTable : tabTablesList) {
@@ -84,6 +83,19 @@ public class CostTableController {
             }
         }
         textFieldSubtotalCost.setText(CurrencyFormatService.getInstance().format(subtotal));
+    }
+
+    public void onAboutAction(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("About Archie Estimator");
+        alert.setHeaderText("Archie Estimator");
+        alert.setContentText("""
+                Contact Information:
+                    Arroyo, Lawrence Jame - lawrence_arroyo@dlsu.edu.ph
+                    Binalla, Rojan Moirae - rojan_binalla@dlsu.edu.ph
+                    Napao, Clarence Gio - clarence_napao@dlsu.edu.ph""");
+        alert.showAndWait();
+
     }
 
     public void onAddTabAction(){
