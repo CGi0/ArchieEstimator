@@ -37,6 +37,9 @@ public class CostTableController {
     public void initialize() {
         tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             tabSelection = newValue;
+            if (tabPane.getTabs().getFirst() == tabSelection) {
+                updateTreeTableViewSummary();
+            }
             updateSubtotal();
         });
 
@@ -49,24 +52,34 @@ public class CostTableController {
         treeTableViewSummary.setShowRoot(false);
         treeTableViewSummary.getRoot().getChildren().add(summaryRowTreeItem);
 
+        colSubtotalCost.setCellFactory(param -> new FinancialTreeTableCell<>());
+
         colTableItem.setCellValueFactory(param -> param.getValue().getValue().rowNameProperty());
         colSubtotalCost.setCellValueFactory(param -> param.getValue().getValue().rowTotalCostProperty());
     }
 
     // TODO: updateTreeTableViewSummary method
     private void updateTreeTableViewSummary(){
+        treeTableViewSummary.getRoot().getChildren().clear();
         for (TabTable tabTable : tabTablesList) {
-
+            TreeItem<SummaryRow> summaryRowTreeItem = new TreeItem<>(new SummaryRow(tabTable));
+            treeTableViewSummary.getRoot().getChildren().add(summaryRowTreeItem);
         }
     }
 
     public void updateSubtotal() {
         BigDecimal subtotal = BigDecimal.ZERO;
 
-        for (TabTable tab : tabTablesList) {
-            if(tab.getTab() == tabPane.getSelectionModel().getSelectedItem()){
-                for (TreeItem<CostRow> item : tab.getTreeTableView().getRoot().getChildren()) {
-                    subtotal = subtotal.add(item.getValue().getCostItemTotalCost());
+        if (tabSelection == tabPane.getTabs().getFirst()){
+            for (TreeItem<SummaryRow> item : treeTableViewSummary.getRoot().getChildren()) {
+                subtotal = subtotal.add(item.getValue().getRowTotalCost());
+            }
+        } else {
+            for (TabTable tab : tabTablesList) {
+                if (tab.getTab() == tabPane.getSelectionModel().getSelectedItem()) {
+                    for (TreeItem<CostRow> item : tab.getTreeTableView().getRoot().getChildren()) {
+                        subtotal = subtotal.add(item.getValue().getCostItemTotalCost());
+                    }
                 }
             }
         }
@@ -111,6 +124,7 @@ public class CostTableController {
                     Optional<ButtonType> result = confirmDialog.showAndWait();
                     if (result.isPresent() && result.get() == ButtonType.OK) {
                         try {
+                            tabTablesList.removeIf(tabTable -> tabTable.getTab() == tabSelection);
                             tabPane.getTabs().remove(tabSelection);
                         } catch (Exception e) {
                             log.warn(e.getMessage());

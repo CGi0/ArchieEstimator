@@ -70,8 +70,8 @@ public class CostBookSelectorController {
             if (costTableController != null) {
                 costTableController.addCostRow(costItemSelection);
             }
-            Stage stage = (Stage) buttonApplyChanges.getScene().getWindow();
-            stage.close();
+//            Stage stage = (Stage) buttonApplyChanges.getScene().getWindow();
+//            stage.close();
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning Dialog");
