@@ -1,9 +1,12 @@
 package com.lbycpd2.archieestimator;
 
 import com.lbycpd2.archieestimator.cell.*;
+import com.lbycpd2.archieestimator.file.JsonReader;
 import com.lbycpd2.archieestimator.model.CostItem;
+import com.lbycpd2.archieestimator.service.CostTableControllerService;
 import com.lbycpd2.archieestimator.service.CurrencyFormatService;
 import com.lbycpd2.archieestimator.table.TabTable;
+import com.lbycpd2.archieestimator.file.JsonWriter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,6 +18,7 @@ import javafx.scene.input.*;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -32,9 +36,15 @@ public class CostTableController {
     private final ObservableList<TabTable> tabTablesList = FXCollections.observableArrayList();
     private final ObservableList<TreeTableView<CostRow>> tablesList = FXCollections.observableArrayList();
 
+
     private Tab tabSelection;
 
+    private boolean fileIsLoaded = false;
+    private boolean fileIsSaved = false;
+    private String saveFilePath = "";
+
     public void initialize() {
+        CostTableControllerService.getInstance().setCostTableController(this);
         tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             tabSelection = newValue;
             if (tabPane.getTabs().getFirst() == tabSelection) {
@@ -85,6 +95,38 @@ public class CostTableController {
         textFieldSubtotalCost.setText(CurrencyFormatService.getInstance().format(subtotal));
     }
 
+    public void onSaveFileAction(){
+        try{
+            JsonWriter jsonWriter = new JsonWriter();
+            jsonWriter.writeTabsToJson(tabTablesList,System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "tabs.json");
+            log.info(tabTablesList.toString());
+            fileIsLoaded = true;
+        } catch (Exception e){
+            log.error(e.getMessage());
+        }
+    }
+
+    public void onSaveFileAsAction(){}
+
+    public void onLoadFileAction(){
+        try{
+            JsonReader jsonReader = new JsonReader();
+            ObservableList<TabTable> readList = FXCollections.observableArrayList();
+            readList.addAll(jsonReader.readJson(System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "tabs.json"));
+            for (TabTable tabTable : readList) {
+                addNewTab(tabTable);
+            }
+            updateWindowTitle("tabs.json");
+        } catch (Exception e){
+            log.error(e.getMessage());
+        }
+    }
+
+    private void updateWindowTitle(String fileName){
+        Stage stage = (Stage) tabPane.getScene().getWindow();
+        stage.setTitle(String.format("Archie Estimator - %s", fileName));
+    }
+
     public void onAboutAction(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About Archie Estimator");
@@ -114,6 +156,13 @@ public class CostTableController {
 
     private void addNewTab(String tabName) {
         TabTable tabTable = new TabTable(tabName, this);
+        tabTablesList.add(tabTable);
+        tablesList.add(tabTable.getTreeTableView());
+        tabPane.getTabs().add(tabTable.getTab());
+        tabPane.getSelectionModel().select(tabTable.getTab());
+    }
+
+    private void addNewTab(TabTable tabTable) {
         tabTablesList.add(tabTable);
         tablesList.add(tabTable.getTreeTableView());
         tabPane.getTabs().add(tabTable.getTab());
@@ -194,7 +243,7 @@ public class CostTableController {
             for (TabTable tab : tabTablesList) {
                 if(tab.getTab() == tabPane.getSelectionModel().getSelectedItem()){
                     item = new TreeItem<>(new CostRow(costItem));
-                    tab.getCostRowList().add(item);
+                    //tab.getCostRowList().add(item);
                     tab.getTreeTableView().getRoot().getChildren().add(item);
                 }
             }

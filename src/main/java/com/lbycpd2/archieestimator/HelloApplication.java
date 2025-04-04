@@ -8,7 +8,6 @@ import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 @Slf4j
 public class HelloApplication extends Application {
@@ -17,7 +16,7 @@ public class HelloApplication extends Application {
     private static final double STAGE_HEIGHT = 768;
 
     @Override
-    public void start(Stage stage) throws IOException, SQLException {
+    public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("cost-table.fxml"));
 
         InitializeTables.start();

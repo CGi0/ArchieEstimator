@@ -5,13 +5,13 @@ import com.lbycpd2.archieestimator.cell.CostRow;
 import com.lbycpd2.archieestimator.cell.FinancialTreeTableCell;
 import com.lbycpd2.archieestimator.cell.TextFieldBigDecimalTreeTableCell;
 import com.lbycpd2.archieestimator.cell.TextFieldFinancialTreeTableCell;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.lbycpd2.archieestimator.util.DefaultCostItem.DEFAULT_COST_ITEM;
 
@@ -19,11 +19,17 @@ import static com.lbycpd2.archieestimator.util.DefaultCostItem.DEFAULT_COST_ITEM
 public class TabTable {
     private final CostTableController controller;
     @Getter
-    private final TreeTableView<CostRow> TreeTableView = createTreeTableView();
+    final TreeTableView<CostRow> TreeTableView = createTreeTableView();
     @Getter
     private final Tab tab;
-    @Getter
-    private final ObservableList<TreeItem<CostRow>> costRowList = FXCollections.observableArrayList();
+
+    public List<CostRow> getCostRowsExportList(){
+        List<CostRow> treeTableViewCostRows = new ArrayList<>();
+        for (TreeItem<CostRow> item : TreeTableView.getRoot().getChildren()){
+            treeTableViewCostRows.add(item.getValue());
+        }
+        return treeTableViewCostRows;
+    }
 
     public TabTable(String tabName, CostTableController controller){
         this.controller = controller;

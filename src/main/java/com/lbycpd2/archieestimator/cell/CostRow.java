@@ -1,11 +1,11 @@
 package com.lbycpd2.archieestimator.cell;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lbycpd2.archieestimator.model.CostItem;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
@@ -13,28 +13,39 @@ import java.math.BigDecimal;
 @Slf4j
 public class CostRow {
 
+    @JsonProperty("costItem")
     @Getter
     private final CostItem costItem;
-    @Getter
-    private final int costItemID;
-    @Getter
-    private final int costCategoryID;
-    @Getter
-    private final String costItemNotes;
-
+//    @Deprecated
+//    @JsonProperty("costItemID")
+//    private final int costItemID;
+//    @JsonProperty("costCategoryID")
+//    @Getter
+//    private final int costCategoryID;
+//    @JsonProperty("costItemNotes")
+//    @Getter
+//    private final String costItemNotes;
+    @JsonProperty("costItemName")
     private final SimpleStringProperty costItemName;
+    @JsonProperty("costItemUnit")
     private final SimpleStringProperty costItemUnit;
+    @JsonProperty("costItemMaterialUnitCost")
     private final SimpleObjectProperty<BigDecimal> costItemMaterialUnitCost;
+    @JsonProperty("costItemLaborUnitCost")
     private final SimpleObjectProperty<BigDecimal> costItemLaborUnitCost;
+    @JsonProperty("costItemQuantity")
     private final SimpleObjectProperty<BigDecimal> costItemQuantity;
+    @JsonProperty("costItemLaborAndMaterialCost")
     private final SimpleObjectProperty<BigDecimal> costItemLaborAndMaterialCost;
+    @JsonProperty("costItemTotalCost")
     private final SimpleObjectProperty<BigDecimal> costItemTotalCost;
 
     public CostRow(CostItem costItem) {
         this.costItem = costItem;
-        this.costItemID = costItem.getCostItemID();
-        this.costCategoryID = costItem.getCostCategoryID();
-        this.costItemNotes = costItem.getCostItemNotes();
+//        @Deprecated
+//        this.costItemID = costItem.getCostItemID();
+//        this.costCategoryID = costItem.getCostCategoryID();
+//        this.costItemNotes = costItem.getCostItemNotes();
         this.costItemName = new SimpleStringProperty(costItem.getCostItemName());
         this.costItemUnit = new SimpleStringProperty(costItem.getCostItemUnit());
         this.costItemMaterialUnitCost = new SimpleObjectProperty<>(costItem.getCostItemMaterialUnitCost());
@@ -97,6 +108,10 @@ public class CostRow {
 
     public String getCostItemName(){
         return costItemName.get();
+    }
+
+    public String getCostItemUnit(){
+        return costItemUnit.get();
     }
 
     public BigDecimal getCostItemMaterialUnitCost() {

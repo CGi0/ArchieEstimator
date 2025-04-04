@@ -4,11 +4,14 @@ module com.lbycpd2.archieestimator {
     requires com.zaxxer.hikari;
     requires org.slf4j;
     requires org.apache.logging.log4j;
-    requires java.sql;
     requires org.apache.logging.log4j.core;
     requires static lombok;
     requires java.naming;
     requires jdk.compiler;
+    requires java.sql;
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.annotation;
 
 
     opens com.lbycpd2.archieestimator to javafx.fxml;
