@@ -15,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,14 +35,11 @@ public class CostTableController {
 
     private ContextMenu contextMenu;
     private final ObservableList<TabTable> tabTablesList = FXCollections.observableArrayList();
-    private final ObservableList<TreeTableView<CostRow>> tablesList = FXCollections.observableArrayList();
-
 
     private Tab tabSelection;
 
     private boolean fileIsLoaded = false;
-    private boolean fileIsSaved = false;
-    private String saveFilePath = "";
+    private File loadFile;
 
     public void initialize() {
         CostTableControllerService.getInstance().setCostTableController(this);
@@ -54,7 +52,6 @@ public class CostTableController {
         });
 
         addNewTab("Default Tab");
-
         TreeItem<SummaryRow> rootTreeItem = new TreeItem<>(new SummaryRow());
         TreeItem<SummaryRow> summaryRowTreeItem = new TreeItem<>(new SummaryRow(tabTablesList.getFirst()));
 
@@ -95,36 +92,119 @@ public class CostTableController {
         textFieldSubtotalCost.setText(CurrencyFormatService.getInstance().format(subtotal));
     }
 
+    public void onNewFileAction(){
+        if (fileIsLoaded){
+            Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmDialog.setTitle("Confirmation Dialog");
+            confirmDialog.setHeaderText("New File");
+            confirmDialog.setContentText("Are you sure you want to create a new File?");
+
+            Optional<ButtonType> result = confirmDialog.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.NO) {
+                log.info("User chose Cancel or closed the dialog");                return;
+            }
+        }
+
+        tabTablesList.clear();
+        tabPane.getTabs().subList(1, tabPane.getTabs().size()).clear();
+        addNewTab("Default Tab");
+        fileIsLoaded = false;
+        loadFile = null;
+        updateWindowTitle(null);
+    }
+
     public void onSaveFileAction(){
         try{
+            if(!fileIsLoaded){
+                File loadFile = getFilePath("SAVE");
+                if(null == loadFile){
+                    return;
+                } else {
+                    this.loadFile = loadFile;
+                }
+            }
+
             JsonWriter jsonWriter = new JsonWriter();
-            jsonWriter.writeTabsToJson(tabTablesList,System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "tabs.json");
+            jsonWriter.writeTabsToJson(tabTablesList,loadFile.getAbsolutePath());
             log.info(tabTablesList.toString());
             fileIsLoaded = true;
+            updateWindowTitle(loadFile.getName());
         } catch (Exception e){
             log.error(e.getMessage());
         }
     }
 
-    public void onSaveFileAsAction(){}
+    public void onSaveFileAsAction(){
+        try{
+            File loadFile = getFilePath("SAVE");
+            if(null == loadFile){
+                return;
+            } else {
+                this.loadFile = loadFile;
+            }
+            JsonWriter jsonWriter = new JsonWriter();
+            jsonWriter.writeTabsToJson(tabTablesList,loadFile.getAbsolutePath());
+            log.info(tabTablesList.toString());
+            fileIsLoaded = true;
+            updateWindowTitle(loadFile.getName());
+        } catch (Exception e){
+            log.error(e.getMessage());
+        }
+
+    }
+
+    private File getFilePath(String mode){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON File", "*.json"));
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home"), "Documents"));
+        if (mode.equalsIgnoreCase("SAVE")) {
+            fileChooser.setInitialFileName("estimate.json");
+            fileChooser.setTitle("Save File");
+            return fileChooser.showSaveDialog(new Stage());
+        } else if (mode.equalsIgnoreCase("LOAD")){
+            fileChooser.setTitle("Load File");
+            return fileChooser.showOpenDialog(new Stage());
+        }
+        return null;
+    }
 
     public void onLoadFileAction(){
         try{
             JsonReader jsonReader = new JsonReader();
+
+            File loadFile = getFilePath("LOAD");
+            if(null == loadFile){
+                return;
+            } else {
+                this.loadFile = loadFile;
+            }
+
+            tabTablesList.clear();
+            tabPane.getTabs().subList(1, tabPane.getTabs().size()).clear();
+
             ObservableList<TabTable> readList = FXCollections.observableArrayList();
-            readList.addAll(jsonReader.readJson(System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "tabs.json"));
+            readList.addAll(jsonReader.readJson(loadFile.getAbsolutePath()));
             for (TabTable tabTable : readList) {
                 addNewTab(tabTable);
             }
-            updateWindowTitle("tabs.json");
+            fileIsLoaded = true;
+            updateWindowTitle(loadFile.getName());
         } catch (Exception e){
-            log.error(e.getMessage());
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error Loading File");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
         }
     }
 
     private void updateWindowTitle(String fileName){
         Stage stage = (Stage) tabPane.getScene().getWindow();
-        stage.setTitle(String.format("Archie Estimator - %s", fileName));
+        if(null == fileName || fileName.isEmpty()) {
+            stage.setTitle("Archie Estimator");
+        } else {
+            stage.setTitle(String.format("Archie Estimator - %s", fileName));
+        }
     }
 
     public void onAboutAction(){
@@ -141,7 +221,7 @@ public class CostTableController {
     }
 
     public void onAddTabAction(){
-        TextInputDialog dialog = new TextInputDialog();
+        TextInputDialog dialog = new TextInputDialog("New Tab");
         dialog.setTitle("Input Dialog");
         dialog.setHeaderText("Enter tab name:");
         dialog.setContentText("Input:");
@@ -157,16 +237,40 @@ public class CostTableController {
     private void addNewTab(String tabName) {
         TabTable tabTable = new TabTable(tabName, this);
         tabTablesList.add(tabTable);
-        tablesList.add(tabTable.getTreeTableView());
         tabPane.getTabs().add(tabTable.getTab());
         tabPane.getSelectionModel().select(tabTable.getTab());
     }
 
     private void addNewTab(TabTable tabTable) {
         tabTablesList.add(tabTable);
-        tablesList.add(tabTable.getTreeTableView());
         tabPane.getTabs().add(tabTable.getTab());
         tabPane.getSelectionModel().select(tabTable.getTab());
+    }
+
+    public void onRenameTabAction(){
+        renameTab();
+    }
+
+    private void renameTab(){
+        try {
+            for (TabTable tab : tabTablesList) {
+                if(tab.getTab() == tabPane.getSelectionModel().getSelectedItem()){
+                    TextInputDialog dialog = new TextInputDialog(tab.getTab().getText());
+                    dialog.setTitle("Input Dialog");
+                    dialog.setHeaderText("Rename tab:");
+                    dialog.setContentText("Input:");
+                    // Show the dialog and capture the result
+                    Optional<String> result = dialog.showAndWait();
+                    if (result.isPresent() && !result.get().trim().isEmpty()) {
+                        tab.getTab().setText(result.get());
+                    } else {
+                        log.info("No input provided or dialog was canceled.");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            log.warn(e.getMessage());
+        }
     }
 
     public void onRemoveTabAction(){

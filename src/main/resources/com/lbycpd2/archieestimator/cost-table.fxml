@@ -61,10 +61,10 @@
             <menus>
               <Menu fx:id="menuFile" mnemonicParsing="false" text="File">
                 <items>
-                  <MenuItem fx:id="menuItemNewFile" mnemonicParsing="false" text="New File" />
+                  <MenuItem fx:id="menuItemNewFile" mnemonicParsing="false" onAction="#onNewFileAction" text="New File" />
+                        <MenuItem fx:id="menuItemLoadFile" mnemonicParsing="false" onAction="#onLoadFileAction" text="Load File" />
                         <MenuItem fx:id="menuItemSaveFile" mnemonicParsing="false" onAction="#onSaveFileAction" text="Save File" />
                         <MenuItem fx:id="menuItemSaveFileAs" mnemonicParsing="false" onAction="#onSaveFileAsAction" text="Save File As" />
-                        <MenuItem fx:id="menuItemLoadFile" mnemonicParsing="false" onAction="#onLoadFileAction" text="Load File" />
                 </items>
               </Menu>
                   <Menu fx:id="menuInsert" mnemonicParsing="false" text="Insert">
@@ -143,16 +143,25 @@
                      <graphic>
                         <ImageView>
                            <image>
-                              <Image url="@icons/group.png" />
+                              <Image url="@icons/list-plus.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="buttonRemoveTab" mnemonicParsing="false" onAction="#onRemoveTabAction">
+                  <Button fx:id="buttonRenameTab" mnemonicParsing="false" onAction="#onRenameTabAction">
                      <graphic>
                         <ImageView>
                            <image>
-                              <Image url="@icons/ungroup.png" />
+                              <Image url="@icons/list-restart.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="buttonRemoveTab" layoutX="288.0" layoutY="10.0" mnemonicParsing="false" onAction="#onRemoveTabAction">
+                     <graphic>
+                        <ImageView>
+                           <image>
+                              <Image url="@icons/list-x.png" />
                            </image>
                         </ImageView>
                      </graphic>
