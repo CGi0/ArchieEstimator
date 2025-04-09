@@ -26,11 +26,51 @@ public class HelloApplication extends Application {
         InitializeTables.start();
 
         // Dependencies Go Brrrr (I'm in Spain without the S)
-        InputStream fontStream = getClass().getResourceAsStream("/fonts/DejaVuSans/DejaVuSans.ttf");
+        InputStream fontStream = getClass().getResourceAsStream("/net/sf/jasperreports/fonts/dejavu/DejaVuSans.ttf");
         Font font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
         GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
 
-        fontStream = getClass().getResourceAsStream("/fonts/DejaVuSans/DejaVuSans-Bold.ttf");
+        fontStream = getClass().getResourceAsStream("/net/sf/jasperreports/fonts/dejavu/DejaVuSans-Bold.ttf");
+        font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+        GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
+
+        fontStream = getClass().getResourceAsStream("/net/sf/jasperreports/fonts/dejavu/DejaVuSans-BoldOblique.ttf");
+        font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+        GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
+
+        fontStream = getClass().getResourceAsStream("/net/sf/jasperreports/fonts/dejavu/DejaVuSans-Oblique.ttf");
+        font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+        GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
+
+        fontStream = getClass().getResourceAsStream("/net/sf/jasperreports/fonts/dejavu/DejaVuSansMono-Bold.ttf");
+        font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+        GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
+
+        fontStream = getClass().getResourceAsStream("/net/sf/jasperreports/fonts/dejavu/DejaVuSansMono-BoldOblique.ttf");
+        font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+        GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
+
+        fontStream = getClass().getResourceAsStream("/net/sf/jasperreports/fonts/dejavu/DejaVuSansMono-Oblique.ttf");
+        font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+        GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
+
+        fontStream = getClass().getResourceAsStream("/net/sf/jasperreports/fonts/dejavu/DejaVuSansMono.ttf");
+        font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+        GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
+
+        fontStream = getClass().getResourceAsStream("/net/sf/jasperreports/fonts/dejavu/DejaVuSerif-BoldItalic.ttf");
+        font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+        GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
+
+        fontStream = getClass().getResourceAsStream("/net/sf/jasperreports/fonts/dejavu/DejaVuSerif-Italic.ttf");
+        font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+        GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
+
+        fontStream = getClass().getResourceAsStream("/net/sf/jasperreports/fonts/dejavu/DejaVuSerif-Bold.ttf");
+        font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+        GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
+
+        fontStream = getClass().getResourceAsStream("/net/sf/jasperreports/fonts/dejavu/DejaVuSerif.ttf");
         font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
         GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
 

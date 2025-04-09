@@ -53,7 +53,9 @@ public class DocumentSettingsService {
     // Initialize default parameters
     private void initializeParameters() {
         parameters.put("REPORT_LOCALE", new Locale("en","PH"));
-        parameters.put("LOGO_IMAGE_PATH", Objects.requireNonNull(getClass().getResource("logo.png")).getPath());
+        File file = new File(String.valueOf(getClass().getResource("/com/lbycpd2/archieestimator/service/logo.png")));
+        if (!file.exists()) {log.info("LOGO NOT FOUND ;-;");} else {log.info("LOGO FOUND ^v^");}
+        parameters.put("LOGO_IMAGE_PATH", Objects.requireNonNull(getClass().getResource("/com/lbycpd2/archieestimator/service/logo.png")).getPath());
         parameters.put("HEADER_COMPANY_NAME", "Archie Magnet, Inc.");
         parameters.put("HEADER_COMPANY_ADDRESS", "25D 2F Zeta II Bldg. 191 Salcedo St., Legaspi Village, San Lorenzo 1223, City of Makati, NCR, Fourth District Philippines");
         parameters.put("HEADER_COMPANY_TELEPHONE", "7720-8797");

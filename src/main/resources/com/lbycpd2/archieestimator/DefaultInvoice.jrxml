@@ -3,7 +3,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Simple_Blue" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryNewPage="true" isSummaryWithPageHeaderAndFooter="true" uuid="86afb092-4e74-4953-9e88-52f1193ff8ff">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="net.sf.jasperreports.export.pdf.force.svg.shapes" value="true"/>
-	<property name="net.sf.jasperreports.export.character.encoding" value="UTF-8"/>
+	<property name="net.sf.jasperreports.export.pptx.embed.fonts" value="true"/>
+	<property name="net.sf.jasperreports.awt.ignore.missing.font" value="true"/>
 	<subDataset name="Dataset1" uuid="d02538bd-7e43-453f-a7c1-ca958b2c33d0">
 		<parameter name="tabName" class="java.lang.String"/>
 		<parameter name="groupSubtotalCost" class="java.math.BigDecimal"/>
@@ -62,8 +63,9 @@
 		<groupExpression><![CDATA[$F{tabName}]]></groupExpression>
 		<groupFooter>
 			<band height="25">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				<textField textAdjust="StretchHeight">
-					<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="480" height="25" printWhenGroupChanges="Tabs" backcolor="rgba(3, 95, 156, 0.14901961)" uuid="f7f96a8e-4db6-4886-a9af-e0dec07d2740">
+					<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="0" width="440" height="25" printWhenGroupChanges="Tabs" backcolor="rgba(3, 95, 156, 0.14901961)" uuid="f7f96a8e-4db6-4886-a9af-e0dec07d2740">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box>
@@ -87,6 +89,19 @@
 						<font fontName="DejaVu Sans" size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{groupSubtotalCost}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement stretchType="ContainerHeight" mode="Opaque" x="440" y="0" width="40" height="25" printWhenGroupChanges="Tabs" backcolor="rgba(3, 95, 156, 0.14901961)" uuid="4ff3285e-2d31-4701-80a3-fd84b34063da">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<topPen lineWidth="1.0" lineStyle="Solid"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
+						<font size="8" isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["PHP"]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -815,7 +830,7 @@
 					<textFieldExpression><![CDATA[$V{totalAmount}]]></textFieldExpression>
 				</textField>
 				<textField textAdjust="StretchHeight">
-					<reportElement stretchType="ContainerHeight" mode="Transparent" x="0" y="25" width="420" height="25" printWhenGroupChanges="Tabs" backcolor="rgba(255, 255, 255, 0.5019608)" uuid="c1ea0330-b6ba-4421-a14a-a6368719cbf5">
+					<reportElement stretchType="ContainerHeight" mode="Transparent" x="0" y="25" width="380" height="25" printWhenGroupChanges="Tabs" backcolor="rgba(255, 255, 255, 0.5019608)" uuid="c1ea0330-b6ba-4421-a14a-a6368719cbf5">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box>
@@ -875,7 +890,7 @@
 					<textFieldExpression><![CDATA[$V{grandTotalAmount}]]></textFieldExpression>
 				</textField>
 				<textField textAdjust="StretchHeight">
-					<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="75" width="420" height="25" printWhenGroupChanges="Tabs" backcolor="rgba(3, 95, 156, 0.14901961)" uuid="7a5a2496-4f62-42d4-a9b9-072df4824082">
+					<reportElement stretchType="ContainerHeight" mode="Opaque" x="0" y="75" width="380" height="25" printWhenGroupChanges="Tabs" backcolor="rgba(3, 95, 156, 0.14901961)" uuid="7a5a2496-4f62-42d4-a9b9-072df4824082">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box>
@@ -888,6 +903,36 @@
 						<font size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA["GRAND TOTAL AMOUNT"]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement stretchType="ContainerHeight" mode="Transparent" x="380" y="25" width="40" height="25" printWhenGroupChanges="Tabs" backcolor="rgba(255, 255, 255, 0.5019608)" uuid="8b4d6f1e-1885-4d22-8325-0018286450d9">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
+						<font size="8" isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["PHP"]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement stretchType="ContainerHeight" mode="Opaque" x="380" y="75" width="40" height="25" printWhenGroupChanges="Tabs" backcolor="rgba(3, 95, 156, 0.14901961)" uuid="32495201-9d2b-413e-b712-826ca0c1c27e">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
+						<font size="8" isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["PHP"]]></textFieldExpression>
 				</textField>
 			</frame>
 			<frame>
@@ -939,7 +984,7 @@
 					<textFieldExpression><![CDATA[$V{grandTotalAmount}.multiply(new BigDecimal("0.3"))]]></textFieldExpression>
 				</textField>
 				<textField textAdjust="StretchHeight">
-					<reportElement stretchType="ContainerHeight" mode="Transparent" x="0" y="25" width="420" height="25" printWhenGroupChanges="Tabs" backcolor="rgba(255, 255, 255, 0.5019608)" uuid="00e63faa-c92c-4cbd-8378-5f7f8a648ed8">
+					<reportElement stretchType="ContainerHeight" mode="Transparent" x="0" y="25" width="380" height="25" printWhenGroupChanges="Tabs" backcolor="rgba(255, 255, 255, 0.5019608)" uuid="00e63faa-c92c-4cbd-8378-5f7f8a648ed8">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box>
@@ -969,7 +1014,7 @@
 					<textFieldExpression><![CDATA[$V{grandTotalAmount}.multiply(new BigDecimal("0.3"))]]></textFieldExpression>
 				</textField>
 				<textField textAdjust="StretchHeight">
-					<reportElement stretchType="ContainerHeight" mode="Transparent" x="0" y="50" width="420" height="25" printWhenGroupChanges="Tabs" backcolor="rgba(255, 255, 255, 0.5019608)" uuid="44560b57-cbbf-4de1-8abd-ead9a63d5862">
+					<reportElement stretchType="ContainerHeight" mode="Transparent" x="0" y="50" width="380" height="25" printWhenGroupChanges="Tabs" backcolor="rgba(255, 255, 255, 0.5019608)" uuid="44560b57-cbbf-4de1-8abd-ead9a63d5862">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box>
@@ -999,7 +1044,7 @@
 					<textFieldExpression><![CDATA[$V{grandTotalAmount}.multiply(new BigDecimal("0.3"))]]></textFieldExpression>
 				</textField>
 				<textField textAdjust="StretchHeight">
-					<reportElement stretchType="ContainerHeight" mode="Transparent" x="0" y="75" width="420" height="25" printWhenGroupChanges="Tabs" backcolor="rgba(255, 255, 255, 0.5019608)" uuid="edadd68c-9a98-43ef-a692-73d3b598c248">
+					<reportElement stretchType="ContainerHeight" mode="Transparent" x="0" y="75" width="380" height="25" printWhenGroupChanges="Tabs" backcolor="rgba(255, 255, 255, 0.5019608)" uuid="edadd68c-9a98-43ef-a692-73d3b598c248">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box>
@@ -1029,7 +1074,7 @@
 					<textFieldExpression><![CDATA[$V{grandTotalAmount}.multiply(new BigDecimal("0.1"))]]></textFieldExpression>
 				</textField>
 				<textField textAdjust="StretchHeight">
-					<reportElement stretchType="ContainerHeight" mode="Transparent" x="0" y="100" width="420" height="25" printWhenGroupChanges="Tabs" backcolor="rgba(255, 255, 255, 0.5019608)" uuid="1a5f9541-b754-4aab-b813-902f724168f3">
+					<reportElement stretchType="ContainerHeight" mode="Transparent" x="0" y="100" width="380" height="25" printWhenGroupChanges="Tabs" backcolor="rgba(255, 255, 255, 0.5019608)" uuid="1a5f9541-b754-4aab-b813-902f724168f3">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<box>
@@ -1042,6 +1087,66 @@
 						<font size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA["10% BALANCE PAYMENT"]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement stretchType="ContainerHeight" mode="Transparent" x="380" y="25" width="40" height="25" printWhenGroupChanges="Tabs" backcolor="rgba(255, 255, 255, 0.5019608)" uuid="a270a509-b9b7-4a04-ae16-d1a9c1aee9c7">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
+						<font size="8" isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["PHP"]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement stretchType="ContainerHeight" mode="Transparent" x="380" y="50" width="40" height="25" printWhenGroupChanges="Tabs" backcolor="rgba(255, 255, 255, 0.5019608)" uuid="e740e63e-4fe4-401c-a571-3bc92fef0645">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
+						<font size="8" isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["PHP"]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement stretchType="ContainerHeight" mode="Transparent" x="380" y="75" width="40" height="25" printWhenGroupChanges="Tabs" backcolor="rgba(255, 255, 255, 0.5019608)" uuid="f8f9041b-887f-4ae5-af77-b2887bd2fcd1">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
+						<font size="8" isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["PHP"]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement stretchType="ContainerHeight" mode="Transparent" x="380" y="100" width="40" height="25" printWhenGroupChanges="Tabs" backcolor="rgba(255, 255, 255, 0.5019608)" uuid="d92a44e8-5e26-4bb5-a2c4-d569c2d832fd">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
+						<font size="8" isBold="true" isItalic="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["PHP"]]></textFieldExpression>
 				</textField>
 			</frame>
 			<line>
