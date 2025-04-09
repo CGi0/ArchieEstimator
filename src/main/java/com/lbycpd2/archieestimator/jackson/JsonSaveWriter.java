@@ -1,12 +1,12 @@
-package com.lbycpd2.archieestimator.file;
+package com.lbycpd2.archieestimator.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.lbycpd2.archieestimator.cell.CostRow;
-import com.lbycpd2.archieestimator.file.serializer.CostItemSerializer;
-import com.lbycpd2.archieestimator.file.serializer.CostRowSerializer;
-import com.lbycpd2.archieestimator.file.serializer.TabTableSerializer;
+import com.lbycpd2.archieestimator.jackson.serializer.CostItemSerializer;
+import com.lbycpd2.archieestimator.jackson.serializer.CostRowSerializer;
+import com.lbycpd2.archieestimator.jackson.serializer.TabTableSerializer;
 import com.lbycpd2.archieestimator.model.CostItem;
 import com.lbycpd2.archieestimator.table.TabTable;
 import lombok.NoArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.List;
 
 @Slf4j
 @NoArgsConstructor
-public class JsonWriter {
+public class JsonSaveWriter {
     public void writeTabsToJson(List<TabTable> tabTableList, String filePath) {
         ObjectMapper objectMapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();

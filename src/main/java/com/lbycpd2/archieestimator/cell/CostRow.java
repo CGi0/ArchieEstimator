@@ -135,7 +135,6 @@ public class CostRow {
     }
 
     // Setters
-
     public void setCostItemMaterialUnitCost(BigDecimal materialCost) {
         this.costItemMaterialUnitCost.set(materialCost);
     }

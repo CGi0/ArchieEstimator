@@ -1,4 +1,4 @@
-package com.lbycpd2.archieestimator.file.deserializer;
+package com.lbycpd2.archieestimator.jackson.deserializer;
 
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
@@ -19,6 +19,8 @@ public class CostItemDeserializer extends JsonDeserializer<CostItem> {
 
         costItem.setCostItemID(node.get("costItemID").asInt());
         costItem.setCostItemName(node.get("costItemName").asText());
+        costItem.setCostItemUnit(node.get("costItemUnit").asText());
+        costItem.setCostItemNotes("");
         costItem.setCostCategoryID(node.get("costCategoryID").asInt());
         costItem.setCostItemNotes(node.get("costItemNotes").asText());
         costItem.setCostItemMaterialUnitCost(new BigDecimal(node.get("costItemMaterialUnitCost").asText()));

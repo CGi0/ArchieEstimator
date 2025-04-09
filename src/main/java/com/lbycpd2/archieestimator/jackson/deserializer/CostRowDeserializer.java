@@ -1,4 +1,4 @@
-package com.lbycpd2.archieestimator.file.deserializer;
+package com.lbycpd2.archieestimator.jackson.deserializer;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;

@@ -79,6 +79,13 @@
                         <MenuItem fx:id="menuItemCostBookAddCostItem" mnemonicParsing="false" onAction="#onCostBookAddCostItemAction" text="Add Cost Item" />
                      </items>
                   </Menu>
+                  <Menu fx:id="menuFile1" mnemonicParsing="false" text="Document">
+                     <items>
+                        <MenuItem fx:id="menuItemDocumentPreview" mnemonicParsing="false" onAction="#onPreviewDocumentAction" text="Preview Document" />
+                        <MenuItem fx:id="menuItemExportDocument" mnemonicParsing="false" onAction="#onExportDocumentAction" text="Export Document" />
+                        <MenuItem fx:id="menuItemDocumentSettings" mnemonicParsing="false" onAction="#onDocumentSettingsAction" text="Settings" />
+                     </items>
+                  </Menu>
               <Menu fx:id="menuHelp" mnemonicParsing="false" text="Help">
                 <items>
                   <MenuItem fx:id="menuItemAbout" mnemonicParsing="false" onAction="#onAboutAction" text="About Archie Estimator" />

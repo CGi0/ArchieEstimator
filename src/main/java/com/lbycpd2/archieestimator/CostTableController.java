@@ -1,12 +1,14 @@
 package com.lbycpd2.archieestimator;
 
 import com.lbycpd2.archieestimator.cell.*;
-import com.lbycpd2.archieestimator.file.JsonReader;
+import com.lbycpd2.archieestimator.jackson.JsonLoadReader;
+import com.lbycpd2.archieestimator.jasper.EstimatorInvoiceAdapter;
 import com.lbycpd2.archieestimator.model.CostItem;
 import com.lbycpd2.archieestimator.service.CostTableControllerService;
 import com.lbycpd2.archieestimator.service.CurrencyFormatService;
+import com.lbycpd2.archieestimator.service.DocumentSettingsService;
 import com.lbycpd2.archieestimator.table.TabTable;
-import com.lbycpd2.archieestimator.file.JsonWriter;
+import com.lbycpd2.archieestimator.jackson.JsonSaveWriter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,11 +20,13 @@ import javafx.scene.input.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.view.JasperViewer;
 
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 public class CostTableController {
@@ -101,7 +105,8 @@ public class CostTableController {
 
             Optional<ButtonType> result = confirmDialog.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.NO) {
-                log.info("User chose Cancel or closed the dialog");                return;
+                log.info("User chose Cancel or closed the dialog");
+                return;
             }
         }
 
@@ -124,11 +129,17 @@ public class CostTableController {
                 }
             }
 
-            JsonWriter jsonWriter = new JsonWriter();
+            JsonSaveWriter jsonWriter = new JsonSaveWriter();
             jsonWriter.writeTabsToJson(tabTablesList,loadFile.getAbsolutePath());
             log.info(tabTablesList.toString());
             fileIsLoaded = true;
             updateWindowTitle(loadFile.getName());
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Save File");
+            alert.setHeaderText(null);
+            alert.setContentText(String.format("Saved %s Successfully", loadFile.getName()));
+            alert.showAndWait();
         } catch (Exception e){
             log.error(e.getMessage());
         }
@@ -142,11 +153,17 @@ public class CostTableController {
             } else {
                 this.loadFile = loadFile;
             }
-            JsonWriter jsonWriter = new JsonWriter();
+            JsonSaveWriter jsonWriter = new JsonSaveWriter();
             jsonWriter.writeTabsToJson(tabTablesList,loadFile.getAbsolutePath());
             log.info(tabTablesList.toString());
             fileIsLoaded = true;
             updateWindowTitle(loadFile.getName());
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Save File");
+            alert.setHeaderText(null);
+            alert.setContentText(String.format("Saved %s Successfully", loadFile.getName()));
+            alert.showAndWait();
         } catch (Exception e){
             log.error(e.getMessage());
         }
@@ -170,7 +187,7 @@ public class CostTableController {
 
     public void onLoadFileAction(){
         try{
-            JsonReader jsonReader = new JsonReader();
+            JsonLoadReader jsonLoadReader = new JsonLoadReader();
 
             File loadFile = getFilePath("LOAD");
             if(null == loadFile){
@@ -183,7 +200,7 @@ public class CostTableController {
             tabPane.getTabs().subList(1, tabPane.getTabs().size()).clear();
 
             ObservableList<TabTable> readList = FXCollections.observableArrayList();
-            readList.addAll(jsonReader.readJson(loadFile.getAbsolutePath()));
+            readList.addAll(jsonLoadReader.readJson(loadFile.getAbsolutePath()));
             for (TabTable tabTable : readList) {
                 addNewTab(tabTable);
             }
@@ -205,6 +222,84 @@ public class CostTableController {
         } else {
             stage.setTitle(String.format("Archie Estimator - %s", fileName));
         }
+    }
+
+    public void onPreviewDocumentAction(){
+        try {
+            JasperPrint jasperPrint = generateJasperReport();
+            JasperViewer viewer = new JasperViewer(jasperPrint, false);
+            viewer.setVisible(true);
+        } catch (JRException | IOException e){
+            log.error(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void onExportDocumentAction(){
+        try {
+            // Step 0: Select FilePath
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF File", "*.pdf"));
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.home"), "Documents"));
+            fileChooser.setInitialFileName(String.format("%s.pdf", getFileNameWithoutExtension(loadFile.getName())));
+            fileChooser.setTitle("Save File");
+            File exportFile = fileChooser.showSaveDialog(new Stage());
+
+            // Step 1->3: Fill the Report
+            JasperPrint jasperPrint = generateJasperReport();
+
+            // Step 4: Export to PDF
+            JasperExportManager.exportReportToPdfFile(jasperPrint, exportFile.getAbsolutePath());
+            JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
+            jasperViewer.setVisible(true);
+
+            log.info("PDF generated successfully!");
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Document Export");
+            alert.setHeaderText(null);
+            alert.setContentText(String.format("Exported %s Successfully", exportFile.getName()));
+            alert.showAndWait();
+        } catch (JRException | IOException e) {
+            log.error(e.getMessage());
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error exporting document");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
+    }
+
+    private static String getFileNameWithoutExtension(String fileName) {
+        return (fileName == null || !fileName.contains(".")) ? fileName : fileName.substring(0, fileName.lastIndexOf("."));
+    }
+
+
+    public void onDocumentSettingsAction(){
+        try {
+            log.info("onDocumentSettingsAction: Trying to open DocumentSettings");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("document-settings.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Document Settings");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            log.warn(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private JasperPrint generateJasperReport() throws JRException, IOException {
+        // Step 1: Load and Compile the JRXML file
+        JasperReport jasperReport = JasperCompileManager.compileReport(getClass().getResource("DefaultInvoice.jrxml").openStream());
+
+        // Step 2: Prepare the Data
+        EstimatorInvoiceAdapter dataSource = new EstimatorInvoiceAdapter(tabTablesList);
+        Map<String, Object> parametersInstance = new HashMap<>(DocumentSettingsService.getInstance().getParameters());
+
+        return JasperFillManager.fillReport(jasperReport, parametersInstance, dataSource);
     }
 
     public void onAboutAction(){

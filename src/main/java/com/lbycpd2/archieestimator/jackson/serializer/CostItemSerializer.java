@@ -1,4 +1,4 @@
-package com.lbycpd2.archieestimator.file.serializer;
+package com.lbycpd2.archieestimator.jackson.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
