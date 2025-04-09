@@ -231,7 +231,13 @@ public class CostTableController {
             viewer.setVisible(true);
         } catch (JRException | IOException e){
             log.error(e.getMessage());
-            e.printStackTrace();
+            log.error(e.getMessage());
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error previewing document");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+            //e.printStackTrace();
         }
     }
 
@@ -241,7 +247,21 @@ public class CostTableController {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF File", "*.pdf"));
             fileChooser.setInitialDirectory(new File(System.getProperty("user.home"), "Documents"));
+
+            if(null == loadFile){
+
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning Dialog");
+                alert.setHeaderText("Save File Before Exporting!");
+                alert.setContentText("Please save the project file (.json) before exporting as PDF");
+                alert.showAndWait();
+
+                onSaveFileAsAction();
+                return;
+            }
+
             fileChooser.setInitialFileName(String.format("%s.pdf", getFileNameWithoutExtension(loadFile.getName())));
+
             fileChooser.setTitle("Save File");
             File exportFile = fileChooser.showSaveDialog(new Stage());
 
@@ -287,7 +307,7 @@ public class CostTableController {
             stage.show();
         } catch (IOException e) {
             log.warn(e.getMessage());
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 

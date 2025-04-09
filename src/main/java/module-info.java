@@ -13,6 +13,7 @@ module com.lbycpd2.archieestimator {
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.annotation;
     requires jasperreports;
+    requires java.desktop;
 
 
     opens com.lbycpd2.archieestimator to javafx.fxml;

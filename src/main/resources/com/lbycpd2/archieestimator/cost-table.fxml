@@ -227,7 +227,7 @@
                      </textFill>
                   </Label>
                   <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
-                  <Label font="$x31" maxWidth="-1.0" text="Testing Build" textFill="$x41" HBox.hgrow="NEVER" />
+                  <Label font="$x31" maxWidth="-1.0" text="Build 1.0" textFill="$x41" HBox.hgrow="NEVER" />
                </children>
                <padding>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
