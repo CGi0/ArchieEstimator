@@ -53,14 +53,29 @@ public class DocumentSettingsService {
     // Initialize default parameters
     private void initializeParameters() {
         parameters.put("REPORT_LOCALE", new Locale("en","PH"));
-        File file = new File(String.valueOf(getClass().getResource("/com/lbycpd2/archieestimator/service/logo.png")));
+        File file = new File(String.valueOf(getClass().getResource("logo.png")));
         if (!file.exists()) {log.info("LOGO NOT FOUND ;-;");} else {log.info("LOGO FOUND ^v^");}
-        parameters.put("LOGO_IMAGE_PATH", Objects.requireNonNull(getClass().getResource("/com/lbycpd2/archieestimator/service/logo.png")).getPath());
-        parameters.put("HEADER_COMPANY_NAME", "Archie Magnet, Inc.");
+        parameters.put("LOGO_IMAGE_PATH", Objects.requireNonNull(getClass().getResource("logo.png")).getPath());
+        parameters.put("HEADER_COMPANY_NAME", "Archi Magnet, Inc.");
         parameters.put("HEADER_COMPANY_ADDRESS", "25D 2F Zeta II Bldg. 191 Salcedo St., Legaspi Village, San Lorenzo 1223, City of Makati, NCR, Fourth District Philippines");
-        parameters.put("HEADER_COMPANY_TELEPHONE", "7720-8797");
+        parameters.put("HEADER_COMPANY_TELEPHONE", "720-8798 * 882-1075");
+        parameters.put("HEADER_COMPANY_MOBILE", "(0917) 3152398 * (0998) 9941627");
+        parameters.put("HEADER_COMPANY_TIN", "009-588-719-000");
+        parameters.put("HEADER_REFERENCE_NUMBER", "000001");
         parameters.put("HEADER_SUBJECT", "Fit Out Cost Proposal");
+        parameters.put("HEADER_SUBJECT_LOCATION", "Fit Out Location");
+        parameters.put("HEADER_CLIENT_ORGANIZATION", "CLIENT ORGANIZATION");
+        parameters.put("HEADER_CLIENT_ADDRESS", "CLIENT ADDRESS");
+        parameters.put("HEADER_CLIENT_NAME", "MR/MS CLIENT");
+        parameters.put("HEADER_CLIENT_POSITION", "CLIENT POSITION");
+        parameters.put("HEADER_GREETINGS", "Dear Mr/Ms Client,");
+        parameters.put("HEADER_PARAGRAPH", "I am pleased to submit our formal quotation, prepared in accordance with our recent discussions. The attached document provides a comprehensive breakdown of the scope of work, pricing, and terms for your review");
         parameters.put("SUMMARY_VALUE_ADDED_TAX", new BigDecimal("0.12")); // Using BigDecimal for documentVAT
+        parameters.put("CONFORME_BANK_NAME","ASIA UNITED BANK");
+        parameters.put("CONFORME_BANK_ADDRESS","G/F VERNIDA 1 AMORSOLO ST., LEGASPI VILL., MAKATI CITY");
+        parameters.put("CONFORME_BANK_ACCOUNT_NAME","ARCHI MAGNET, INC.");
+        parameters.put("CONFORME_BANK_ACCOUNT_NUMBER","052-01-000103-8");
+        parameters.put("CONFORME_BANK_SWIFT_CODE","AUBKPHMM");
         parameters.put("CONFORME_EXCLUSIONS", "* Office equipment, appliances, LAN, WiFi, Server switches, PMS of existing Air Condition Units");
         parameters.put("CONFORME_REMARKS", "* Any works not mentioned on this quotation will be considered variation order and shall be charged accordingly");
         parameters.put("CONFORME_TERMS_OF_PAYMENT", "30% Down payment; 2x 30% Progress Billing; 10% Balance upon job completion.");

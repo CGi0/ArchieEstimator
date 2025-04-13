@@ -97,14 +97,8 @@
         </dependency>
         <dependency>
             <groupId>com.lbycpd2</groupId>
-            <artifactId>fonts-dejavu-extension</artifactId>
+            <artifactId>fonts-arial-extension</artifactId>
             <version>1.0</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.github.librepdf/openpdf-fonts-extra -->
-        <dependency>
-            <groupId>com.github.librepdf</groupId>
-            <artifactId>openpdf-fonts-extra</artifactId>
-            <version>2.0.3</version>
         </dependency>
     </dependencies>
 

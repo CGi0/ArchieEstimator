@@ -18,4 +18,5 @@ module com.lbycpd2.archieestimator {
 
     opens com.lbycpd2.archieestimator to javafx.fxml;
     exports com.lbycpd2.archieestimator;
+    exports com.lbycpd2.archieestimator.util;
 }

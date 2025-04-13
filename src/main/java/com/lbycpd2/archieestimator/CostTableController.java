@@ -21,7 +21,10 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.fonts.FontFamily;
 import net.sf.jasperreports.engine.fonts.SimpleFontExtensionHelper;
+import net.sf.jasperreports.engine.fonts.SimpleFontFace;
+import net.sf.jasperreports.engine.fonts.SimpleFontFamily;
 import net.sf.jasperreports.view.JasperViewer;
 
 import java.io.File;
@@ -232,7 +235,7 @@ public class CostTableController {
             JasperViewer viewer = new JasperViewer(jasperPrint, false);
             viewer.setVisible(true);
         } catch (JRException | IOException e){
-            log.error(e.getMessage());
+            e.printStackTrace();
             log.error(e.getMessage());
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -270,8 +273,10 @@ public class CostTableController {
             // Step 1->3: Fill the Report
             JasperPrint jasperPrint = generateJasperReport();
 
+            SimpleJasperReportsContext jasperReportsContext = setupJSExtensions();
+
             // Step 4: Export to PDF
-            JasperExportManager.exportReportToPdfFile(jasperPrint, exportFile.getAbsolutePath());
+            JasperExportManager.getInstance(jasperReportsContext).exportToPdfFile(jasperPrint, exportFile.getAbsolutePath());
             JasperViewer jasperViewer = new JasperViewer(jasperPrint, false);
             jasperViewer.setVisible(true);
 
@@ -315,13 +320,94 @@ public class CostTableController {
 
     private JasperPrint generateJasperReport() throws JRException, IOException {
         // Step 1: Load and Compile the JRXML file
-        JasperReport jasperReport = JasperCompileManager.compileReport(getClass().getResource("DefaultInvoice.jrxml").openStream());
+        JasperReport jasperReport = JasperCompileManager.compileReport(getClass().getResource("RevisedInvoice.jrxml").openStream());
 
         // Step 2: Prepare the Data
         EstimatorInvoiceAdapter dataSource = new EstimatorInvoiceAdapter(tabTablesList);
         Map<String, Object> parametersInstance = new HashMap<>(DocumentSettingsService.getInstance().getParameters());
+//        parametersInstance.put("SUBREPORT_DATASOURCE", dataSource);
+//        parametersInstance.put("SUBREPORT_DIR", Objects.requireNonNull(getClass().getResource("")).getPath());
+
+        //SimpleJasperReportsContext jasperReportsContext = setupJSExtensions();
 
         return JasperFillManager.fillReport(jasperReport, parametersInstance, dataSource);
+        //return JasperFillManager.getInstance(jasperReportsContext).fillReport(jasperReport, parametersInstance, dataSource);
+    }
+
+    private SimpleJasperReportsContext setupJSExtensions(){
+        SimpleJasperReportsContext jasperReportsContext = new SimpleJasperReportsContext();
+        // Create the Arial font family
+        SimpleFontFamily familyArial = new SimpleFontFamily();
+        familyArial.setName("Arial");
+        familyArial.setPdfEmbedded(true);
+        familyArial.setPdfEncoding("Identity-H");
+
+// Define the normal font face
+        SimpleFontFace normalArial = new SimpleFontFace(jasperReportsContext);
+        normalArial.setTtf("fonts/Arial/arial.ttf");
+        familyArial.setNormalFace(normalArial);
+
+// Define the bold font face
+        SimpleFontFace boldArial = new SimpleFontFace(jasperReportsContext);
+        boldArial.setTtf("fonts/Arial/arialbd.ttf");
+        familyArial.setBoldFace(boldArial);
+
+// Define the italic font face
+        SimpleFontFace italicArial = new SimpleFontFace(jasperReportsContext);
+        italicArial.setTtf("fonts/Arial/ariali.ttf");
+        familyArial.setItalicFace(italicArial);
+
+// Define the bold-italic font face
+        SimpleFontFace boldItalicArial = new SimpleFontFace(jasperReportsContext);
+        boldItalicArial.setTtf("fonts/Arial/arialbi.ttf");
+        familyArial.setBoldItalicFace(boldItalicArial);
+
+// Add the Arial font family as an extension
+        jasperReportsContext.setExtensions(FontFamily.class, Arrays.asList(familyArial));
+
+// Create the Arial Narrow font family
+        SimpleFontFamily familyArialNarrow = new SimpleFontFamily();
+        familyArialNarrow.setName("Arial Narrow");
+        familyArialNarrow.setPdfEmbedded(true);
+        familyArialNarrow.setPdfEncoding("Identity-H");
+
+// Define the normal font face for Arial Narrow
+        SimpleFontFace normalArialNarrow = new SimpleFontFace(jasperReportsContext);
+        normalArialNarrow.setTtf("fonts/ArialNarrow/ARIALN.TTF");
+        familyArialNarrow.setNormalFace(normalArialNarrow);
+
+// Define the bold font face for Arial Narrow
+        SimpleFontFace boldArialNarrow = new SimpleFontFace(jasperReportsContext);
+        boldArialNarrow.setTtf("fonts/ArialNarrow/ARIALNB.TTF");
+        familyArialNarrow.setBoldFace(boldArialNarrow);
+
+// Define the italic font face for Arial Narrow
+        SimpleFontFace italicArialNarrow = new SimpleFontFace(jasperReportsContext);
+        italicArialNarrow.setTtf("fonts/ArialNarrow/ARIALNI.TTF");
+        familyArialNarrow.setItalicFace(italicArialNarrow);
+
+// Define the bold-italic font face for Arial Narrow
+        SimpleFontFace boldItalicArialNarrow = new SimpleFontFace(jasperReportsContext);
+        boldItalicArialNarrow.setTtf("fonts/ArialNarrow/ARIALNBI.TTF");
+        familyArialNarrow.setBoldItalicFace(boldItalicArialNarrow);
+
+// Add the Arial Narrow font family as an extension
+        jasperReportsContext.setExtensions(FontFamily.class, Arrays.asList(familyArialNarrow));
+
+// Create the Arial Black font family
+        SimpleFontFamily familyArialBlack = new SimpleFontFamily();
+        familyArialBlack.setName("Arial Black");
+        familyArialBlack.setPdfEmbedded(true);
+        familyArialBlack.setPdfEncoding("Identity-H");
+
+// Define the normal font face for Arial Black
+        SimpleFontFace normalArialBlack = new SimpleFontFace(jasperReportsContext);
+        normalArialBlack.setTtf("fonts/ArialBlack/ariblk.ttf");
+        familyArialBlack.setNormalFace(normalArialBlack);
+
+// Add the Arial Black font family as an extension
+        jasperReportsContext.setExtensions(FontFamily.class, Arrays.asList(familyArialBlack));
+        return jasperReportsContext;
     }
 
     public void onAboutAction(){
